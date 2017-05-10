@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "524667144755",
+    "firebase_url": "https://rapidpro-sample.firebaseio.com",
+    "project_id": "rapidpro-sample",
+    "storage_bucket": "rapidpro-sample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524667144755:android:cf9f5111a220074d",
+        "android_client_info": {
+          "package_name": "io.rapidpro.sdk.sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524667144755-svre95eif850vr15k5fj9bd5ss6ts48j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7mD5A-Jp25BllVKFxVjbDNFKHuUWnfto"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
