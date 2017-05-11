@@ -8,11 +8,11 @@ import retrofit2.Callback;
  * Copyright © 2017 rapidpro-android-sdk, Inc. All rights reserved.
  */
 
-public abstract class FcmClientCallback<T> implements Callback<T> {
+abstract class FcmClientCallback<T> implements Callback<T> {
 
     private final FcmClientChatPresenter presenter;
 
-    public FcmClientCallback(FcmClientChatPresenter presenter) {
+    FcmClientCallback(FcmClientChatPresenter presenter) {
         this.presenter = presenter;
     }
 
