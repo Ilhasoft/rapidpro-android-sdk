@@ -17,15 +17,15 @@ import io.rapidpro.sdk.util.BundleHelper;
 /**
  * Created by john-mac on 6/30/16.
  */
-public class ChatPresenter {
+class ChatPresenter {
 
     private ChatView view;
 
-    public ChatPresenter(ChatView view) {
+    ChatPresenter(ChatView view) {
         this.view = view;
     }
 
-    public void loadMessages() {
+    void loadMessages() {
         if (!TextUtils.isEmpty(FcmClient.getPreferences().getFcmToken())) {
             view.showLoading();
             FcmClient.loadMessages(new MessagesLoadingListener() {
@@ -44,7 +44,7 @@ public class ChatPresenter {
         }
     }
 
-    public void loadMessage(Bundle data) {
+    void loadMessage(Bundle data) {
         FcmClient.loadMessage(BundleHelper.getMessageId(data), new LoadMessageListener() {
             @Override
             public void onMessageLoaded(Message message) {
@@ -58,7 +58,7 @@ public class ChatPresenter {
         });
     }
 
-    public Message createChatMessage(String messageText) {
+    Message createChatMessage(String messageText) {
         Message chatMessage = new Message();
         setId(chatMessage);
         chatMessage.setText(messageText);
@@ -76,7 +76,7 @@ public class ChatPresenter {
         }
     }
 
-    public Type getFirstType(Message lastMessage) {
+    Type getFirstType(Message lastMessage) {
         return TypeValidation.getTypeValidationForRule(lastMessage.getRuleset()
                 .getRules().get(0)).getType();
     }

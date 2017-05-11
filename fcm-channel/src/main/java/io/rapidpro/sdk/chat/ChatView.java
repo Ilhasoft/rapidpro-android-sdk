@@ -7,7 +7,7 @@ import io.rapidpro.sdk.core.models.Message;
 /**
  * Created by john-mac on 6/30/16.
  */
-public interface ChatView {
+interface ChatView {
 
     void addNewMessage(String messageText);
 
