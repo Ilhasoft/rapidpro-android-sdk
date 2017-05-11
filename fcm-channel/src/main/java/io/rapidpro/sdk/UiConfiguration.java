@@ -11,7 +11,7 @@ public class UiConfiguration {
     public static final int INVALID_COLOR = -1;
 
     @DrawableRes
-    private int backResource = R.drawable.rapidpro_ic_arrow_back_white;
+    private int backResource = R.drawable.fcm_client_ic_arrow_back_white;
 
     @DrawableRes
     private int iconResource = R.drawable.fcm_client_ic_send_message;

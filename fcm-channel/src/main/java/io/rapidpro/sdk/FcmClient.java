@@ -231,8 +231,15 @@ public class FcmClient {
         return new IllegalStateException("Response not successful. HTTP Code: " + response.code() + " Response: " + response.raw());
     }
 
-    private static void registerContactIfNeeded(String urn) {
-        if (TextUtils.isEmpty(preferences.getFcmToken()) || TextUtils.isEmpty(preferences.getContactUuid())) {
+    public static void refreshContactToken() {
+        String urn = preferences.getUrn();
+        if (!TextUtils.isEmpty(urn)) {
+            registerContact(urn);
+        }
+    }
+
+    public static void registerContactIfNeeded(String urn) {
+        if (!isContactRegistered()) {
             registerContact(urn);
         }
     }
@@ -244,6 +251,10 @@ public class FcmClient {
         Intent registrationIntent = new Intent(context, registrationIntentService);
         registrationIntent.putExtra(FcmClientRegistrationIntentService.EXTRA_URN, urn);
         context.startService(registrationIntent);
+    }
+
+    public static boolean isContactRegistered() {
+        return !TextUtils.isEmpty(preferences.getFcmToken()) && !TextUtils.isEmpty(preferences.getContactUuid());
     }
 
     public static Preferences getPreferences() {

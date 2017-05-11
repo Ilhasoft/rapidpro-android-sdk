@@ -35,7 +35,7 @@ public interface RapidProApi {
                                                      @Field("fcm_token") String fcmToken);
 
     @FormUrlEncoded
-    @POST("handlers/fcm/receive/")
+    @POST("handlers/fcm/receive/{channel}")
     Call<ResponseBody> sendReceivedMessage(@Path("channel") String channel,
                                            @Field("from") String from,
                                            @Field("fcm_token") String fcmToken,

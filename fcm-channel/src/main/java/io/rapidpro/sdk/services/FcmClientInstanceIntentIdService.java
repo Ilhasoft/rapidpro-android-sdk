@@ -12,6 +12,6 @@ public class FcmClientInstanceIntentIdService extends FirebaseInstanceIdService 
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
-        FcmClient.forceRegistration();
+        FcmClient.refreshContactToken();
     }
 }

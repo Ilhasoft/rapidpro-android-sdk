@@ -12,8 +12,6 @@ import java.util.Map;
  */
 public class Preferences {
 
-    public static final String REGISTRATION_COMPLETE = "br.com.ilhasoft.push.RegistrationCompleted";
-
     private static final String KEY_URN = "urn";
     private static final String KEY_FCM_TOKEN = "fcmToken";
     private static final String KEY_CONTACT_UUID = "contactUuid";

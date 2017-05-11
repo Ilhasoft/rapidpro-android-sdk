@@ -31,6 +31,7 @@ import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.Type;
 import io.rapidpro.sdk.persistence.Preferences;
 import io.rapidpro.sdk.services.FcmClientIntentService;
+import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
 import io.rapidpro.sdk.util.BundleHelper;
 import io.rapidpro.sdk.util.SpaceItemDecoration;
 
@@ -63,7 +64,7 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
         presenter = new ChatPresenter(this);
         presenter.loadMessages();
 
-        IntentFilter registrationFilter = new IntentFilter(Preferences.REGISTRATION_COMPLETE);
+        IntentFilter registrationFilter = new IntentFilter(FcmClientRegistrationIntentService.REGISTRATION_COMPLETE);
         getActivity().registerReceiver(onRegisteredReceiver, registrationFilter);
     }
 

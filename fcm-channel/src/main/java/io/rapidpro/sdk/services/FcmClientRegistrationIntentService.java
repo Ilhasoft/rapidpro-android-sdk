@@ -22,6 +22,8 @@ import retrofit2.Response;
  */
 public class FcmClientRegistrationIntentService extends IntentService {
 
+    public static final String REGISTRATION_COMPLETE = "io.rapidpro.sdk.RegistrationCompleted";
+
     private static final String TAG = "RegistrationIntent";
 
     public static final String EXTRA_URN = "urn";
@@ -57,7 +59,7 @@ public class FcmClientRegistrationIntentService extends IntentService {
             Log.e(TAG, "onHandleIntent: ", exception);
         }
 
-        Intent registrationComplete = new Intent(Preferences.REGISTRATION_COMPLETE);
+        Intent registrationComplete = new Intent(REGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
