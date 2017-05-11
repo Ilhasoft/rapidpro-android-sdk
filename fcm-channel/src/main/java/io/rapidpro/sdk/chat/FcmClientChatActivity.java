@@ -57,7 +57,7 @@ public class FcmClientChatActivity extends AppCompatActivity {
             toolbar.setTitleTextColor(getResources().getColor(titleColorRes));
             toolbar.setBackgroundColor(getToolbarColor());
             setSupportActionBar(toolbar);
-        }else {
+        } else {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setBackgroundDrawable(new ColorDrawable(getToolbarColor()));
             setActionBarTitleColor(actionBar, FcmClient.getUiConfiguration().getTitleString());

@@ -27,6 +27,7 @@ import io.rapidpro.sdk.R;
 import io.rapidpro.sdk.chat.tags.OnTagClickListener;
 import io.rapidpro.sdk.chat.tags.TagsAdapter;
 import io.rapidpro.sdk.core.managers.FlowRunnerManager;
+import io.rapidpro.sdk.core.models.FlowRuleset;
 import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.Type;
 import io.rapidpro.sdk.services.FcmClientIntentService;
@@ -37,7 +38,7 @@ import io.rapidpro.sdk.util.SpaceItemDecoration;
 /**
  * Created by john-mac on 8/30/16.
  */
-public class FcmClientChatFragment extends Fragment implements ChatView {
+public class FcmClientChatFragment extends Fragment implements FcmClientChatView {
 
     private EditText message;
     private RecyclerView messageList;
@@ -46,7 +47,7 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
 
     private ChatMessagesAdapter adapter;
 
-    private ChatPresenter presenter;
+    private FcmClientChatPresenter presenter;
 
     public static boolean visible = false;
 
@@ -62,11 +63,11 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
 
         setupView(view);
 
-        presenter = new ChatPresenter(this);
+        presenter = new FcmClientChatPresenter(this);
         presenter.loadMessages();
 
         IntentFilter registrationFilter = new IntentFilter(FcmClientRegistrationIntentService.REGISTRATION_COMPLETE);
-        getActivity().registerReceiver(onRegisteredReceiver, registrationFilter);
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(onRegisteredReceiver, registrationFilter);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getActivity().unregisterReceiver(onRegisteredReceiver);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(onRegisteredReceiver);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -144,20 +145,20 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
             Message message = BundleHelper.getMessage(data);
             message.setCreatedOn(new Date());
             adapter.addChatMessage(message);
-            onLastMessageChanged(message);
+            onLastMessageChanged();
         }
     };
 
     @Override
     public void onMessagesLoaded(List<Message> messages) {
         adapter.setMessages(messages);
-        onLastMessageChanged(adapter.getLastMessage());
+        onLastMessageChanged();
     }
 
     @Override
     public void onMessageLoaded(Message message) {
         adapter.addChatMessage(message);
-        onLastMessageChanged(message);
+        onLastMessageChanged();
     }
 
     @Override
@@ -170,13 +171,17 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
         progressBar.setVisibility(View.GONE);
     }
 
-    private void onLastMessageChanged(Message lastMessage) {
-        messageList.scrollToPosition(0);
-        if (lastMessage != null && lastMessage.getRuleset() != null
-        && lastMessage.getRuleset().getRules() != null) {
-            Type type = presenter.getFirstType(lastMessage);
+    @Override
+    public void showMessage(int messageId) {
+        showMessage(getString(messageId));
+    }
+
+    @Override
+    public void setCurrentRulesets(FlowRuleset rulesets) {
+        if (rulesets != null && rulesets.getRules() != null) {
+            Type type = presenter.getFirstType(rulesets);
             if (type == Type.Choice) {
-                TagsAdapter tagsAdapter = new TagsAdapter(lastMessage.getRuleset().getRules(), onTagClickListener);
+                TagsAdapter tagsAdapter = new TagsAdapter(rulesets.getRules(), onTagClickListener);
                 tags.setAdapter(tagsAdapter);
                 tags.setVisibility(View.VISIBLE);
             } else {
@@ -186,6 +191,11 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
         } else {
             tags.setVisibility(View.GONE);
         }
+    }
+
+    private void onLastMessageChanged() {
+        messageList.scrollToPosition(0);
+        presenter.loadCurrentRulesets();
     }
 
     @Override

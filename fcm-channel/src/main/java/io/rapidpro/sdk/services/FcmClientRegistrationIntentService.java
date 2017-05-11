@@ -53,8 +53,10 @@ public class FcmClientRegistrationIntentService extends IntentService {
                 contact.setUrns(Collections.singletonList(urn));
             }
 
-            preferences.apply();
-            onGcmRegistered(fcmToken, contact);
+            preferences.commit();
+            FcmClient.setPreferences(preferences);
+
+            onFcmRegistered(fcmToken, contact);
         } catch (Exception exception) {
             Log.e(TAG, "onHandleIntent: ", exception);
         }
@@ -68,6 +70,6 @@ public class FcmClientRegistrationIntentService extends IntentService {
         return rapidProServices.registerFcmContact(FcmClient.getChannel(), urn, fcmToken).execute();
     }
 
-    public void onGcmRegistered(String pushIdentity, Contact contact){}
+    public void onFcmRegistered(String pushIdentity, Contact contact){}
 
 }

@@ -6,17 +6,14 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import io.rapidpro.sdk.chat.FcmClientChatActivity;
 import io.rapidpro.sdk.chat.FcmClientChatFragment;
 import io.rapidpro.sdk.core.models.Contact;
-import io.rapidpro.sdk.core.models.Message;
-import io.rapidpro.sdk.core.models.network.ApiResponse;
 import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
 import io.rapidpro.sdk.core.network.RapidProServices;
 import io.rapidpro.sdk.listeners.ContactListener;
-import io.rapidpro.sdk.listeners.LoadMessageListener;
-import io.rapidpro.sdk.listeners.MessagesLoadingListener;
 import io.rapidpro.sdk.listeners.SendMessageListener;
 import io.rapidpro.sdk.persistence.Preferences;
 import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
@@ -118,107 +115,11 @@ public class FcmClient {
         });
     }
 
-    public static void loadMessage(Integer messageId, final LoadMessageListener listener) {
-        RapidProServices services = new RapidProServices(host, getToken());
-        services.loadMessageById(messageId).enqueue(new Callback<ApiResponse<Message>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<Message>> call, Response<ApiResponse<Message>> response) {
-                if (response.isSuccessful() && response.body().getResults() != null
-                && !response.body().getResults().isEmpty()) {
-                    listener.onMessageLoaded(response.body().getResults().get(0));
-                } else {
-                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.fcm_client_error_load_message));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse<Message>> call, Throwable exception) {
-                listener.onError(exception, context.getString(R.string.fcm_client_error_load_message));
-            }
-        });
-    }
-
-    public static void loadMessages(final MessagesLoadingListener listener) {
-        final RapidProServices services = new RapidProServices(host, getToken());
-        String contactUuid = getPreferences().getContactUuid();
-        if (!TextUtils.isEmpty(contactUuid)) {
-            loadMessagesWithContact(services, contactUuid, listener);
-        } else {
-            loadContact(listener, services);
-        }
-    }
-
-    private static void loadContact(final MessagesLoadingListener listener, final RapidProServices services) {
-        services.loadContactsByUrn("fcm:" + getPreferences().getFcmToken()).enqueue(new Callback<ApiResponse<Contact>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<Contact>> call, Response<ApiResponse<Contact>> response) {
-                if (response.isSuccessful() && response.body().getCount() > 0) {
-                    Contact contact = response.body().getResults().get(0);
-                    loadMessagesWithContact(services, contact.getUuid(), listener);
-                } else {
-                    listener.onError(getExceptionForErrorResponse(response)
-                            , context.getString(R.string.fcm_client_error_load_messages));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse<Contact>> call, Throwable throwable) {
-                listener.onError(throwable, context.getString(R.string.fcm_client_error_load_messages));
-            }
-        });
-    }
-
-    private static void loadMessagesWithContact(RapidProServices services, String contactUuid, final MessagesLoadingListener listener) {
-        services.loadMessages(contactUuid).enqueue(new Callback<ApiResponse<Message>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<Message>> call, Response<ApiResponse<Message>> response) {
-                if (response.isSuccessful()) {
-                    listener.onMessagesLoaded(response.body().getResults());
-                } else {
-                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.fcm_client_error_load_messages));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse<Message>> call, Throwable throwable) {
-                listener.onError(throwable, context.getString(R.string.fcm_client_error_load_messages));
-            }
-        });
-    }
-
     public static Contact getContact() {
         Contact contact = new Contact();
         contact.setUuid(preferences.getContactUuid());
+        contact.setUrns(Collections.singletonList(preferences.getUrn()));
         return contact;
-    }
-
-    public static void updateContact(final Contact contact, final ContactListener listener) {
-        contact.setUuid(preferences.getContactUuid());
-
-        RapidProServices services = new RapidProServices(host, token);
-        services.saveContact(contact).enqueue(new Callback<Contact>() {
-            @Override
-            public void onResponse(Call<Contact> call, Response<Contact> response) {
-                if (response.isSuccessful()) {
-                    listener.onContactSaved(response.body());
-                } else {
-                    listener.onError(getExceptionForErrorResponse(response)
-                            , context.getString(R.string.fcm_client_error_contact_update));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Contact> call, Throwable throwable) {
-                listener.onError(throwable, context.getString(R.string.fcm_client_error_contact_update));
-            }
-        });
-    }
-
-    public static void updateContact(final Contact contact) throws IOException {
-        contact.setUuid(preferences.getContactUuid());
-
-        RapidProServices services = new RapidProServices(host, token);
-        services.saveContact(contact).execute();
     }
 
     public static Response<FcmRegistrationResponse> saveContactWithToken(String urn, String fcmToken, String token) throws java.io.IOException {
@@ -257,8 +158,16 @@ public class FcmClient {
         return !TextUtils.isEmpty(preferences.getFcmToken()) && !TextUtils.isEmpty(preferences.getContactUuid());
     }
 
+    public static RapidProServices getServices() {
+        return services;
+    }
+
     public static boolean isChatVisible() {
         return FcmClientChatFragment.visible;
+    }
+
+    public static void setPreferences(Preferences preferences) {
+        FcmClient.preferences = preferences;
     }
 
     public static Preferences getPreferences() {

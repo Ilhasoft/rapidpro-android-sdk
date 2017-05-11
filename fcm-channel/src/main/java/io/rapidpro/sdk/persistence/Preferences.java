@@ -1,5 +1,6 @@
 package io.rapidpro.sdk.persistence;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -54,6 +55,15 @@ public class Preferences {
 
     public String getFcmToken() {
         return sharedPreferences.getString(getKey(KEY_FCM_TOKEN), null);
+    }
+
+    @SuppressLint("ApplySharedPref")
+    public void commit() {
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        for (String key : objects.keySet()) {
+            editor.putString(key, objects.get(key));
+        }
+        editor.commit();
     }
 
     public void apply() {

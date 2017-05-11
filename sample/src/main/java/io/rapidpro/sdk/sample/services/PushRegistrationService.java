@@ -2,10 +2,9 @@ package io.rapidpro.sdk.sample.services;
 
 import android.util.Log;
 
-import java.io.IOException;
-
 import io.rapidpro.sdk.FcmClient;
 import io.rapidpro.sdk.core.models.Contact;
+import io.rapidpro.sdk.core.network.RapidProServices;
 import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
 
 /**
@@ -13,17 +12,18 @@ import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
  */
 public class PushRegistrationService extends FcmClientRegistrationIntentService {
 
-    private static final String TAG = "PushRegistrationService";
+    private static final String TAG = "RegistrationService";
 
     @Override
-    public void onGcmRegistered(String pushIdentity, Contact contact) {
+    public void onFcmRegistered(String pushIdentity, Contact contact) {
         contact.setName("IlhaPush Sample User");
         contact.setEmail("sample@gmail.com");
 
         try {
-            FcmClient.updateContact(contact);
-        } catch (IOException e) {
-            Log.e(TAG, "onGcmRegistered: ", e);
+            RapidProServices rapidProServices = FcmClient.getServices();
+            rapidProServices.saveContact(contact).execute();
+        } catch (Exception exception) {
+            Log.e(TAG, "onFcmRegistered: ", exception);
         }
     }
 }
