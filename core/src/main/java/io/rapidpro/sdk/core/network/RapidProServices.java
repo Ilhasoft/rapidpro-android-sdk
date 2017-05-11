@@ -9,11 +9,12 @@ import java.util.HashMap;
 
 import io.rapidpro.sdk.core.adapters.GsonDateTypeAdapter;
 import io.rapidpro.sdk.core.adapters.HashMapTypeAdapter;
-import io.rapidpro.sdk.core.models.network.ApiResponse;
 import io.rapidpro.sdk.core.models.Contact;
 import io.rapidpro.sdk.core.models.FlowDefinition;
 import io.rapidpro.sdk.core.models.FlowRun;
 import io.rapidpro.sdk.core.models.Message;
+import io.rapidpro.sdk.core.models.network.ApiResponse;
+import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -87,8 +88,12 @@ public class RapidProServices {
         return rapidProApi.loadContacts(token, urn);
     }
 
-    public Call<ResponseBody> sendReceivedMessage(String channel, String from, String msg) {
-        return rapidProApi.sendReceivedMessage(token, channel, from, msg);
+    public Call<FcmRegistrationResponse> registerFcmContact(String channel, String urn, String fcmToken) {
+        return rapidProApi.registerFcmContact(channel, urn, fcmToken);
+    }
+
+    public Call<ResponseBody> sendReceivedMessage(String channel, String from, String fcmToken, String msg) {
+        return rapidProApi.sendReceivedMessage(channel, from, fcmToken, msg);
     }
 
     public Call<Contact> saveContact(Contact contact) {

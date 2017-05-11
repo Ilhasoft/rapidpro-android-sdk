@@ -9,10 +9,10 @@ import java.io.IOException;
 
 import io.rapidpro.sdk.chat.FcmClientChatActivity;
 import io.rapidpro.sdk.chat.FcmClientChatFragment;
-import io.rapidpro.sdk.core.adapters.ContactBuilder;
 import io.rapidpro.sdk.core.models.Contact;
 import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.network.ApiResponse;
+import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
 import io.rapidpro.sdk.core.network.RapidProServices;
 import io.rapidpro.sdk.listeners.ContactListener;
 import io.rapidpro.sdk.listeners.LoadMessageListener;
@@ -61,8 +61,6 @@ public class FcmClient {
         FcmClient.preferences = new Preferences(context);
         FcmClient.services = new RapidProServices(host, getToken());
         FcmClient.uiConfiguration = uiConfiguration;
-
-        registerFcmIfNeeded();
     }
 
     public static UiConfiguration getUiConfiguration() {
@@ -92,7 +90,8 @@ public class FcmClient {
     }
 
     public static void sendMessage(String message) {
-        services.sendReceivedMessage(channel, preferences.getIdentity(), message).enqueue(new Callback<ResponseBody>() {
+        services.sendReceivedMessage(channel, preferences.getUrn(), preferences.getFcmToken(), message)
+                .enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {}
             @Override
@@ -101,7 +100,8 @@ public class FcmClient {
     }
 
     public static void sendMessage(String message, final SendMessageListener listener) {
-        services.sendReceivedMessage(channel, preferences.getIdentity(), message).enqueue(new Callback<ResponseBody>() {
+        services.sendReceivedMessage(channel, preferences.getUrn(), preferences.getFcmToken(), message)
+                .enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -149,7 +149,7 @@ public class FcmClient {
     }
 
     private static void loadContact(final MessagesLoadingListener listener, final RapidProServices services) {
-        services.loadContactsByUrn("fcm:" + getPreferences().getIdentity()).enqueue(new Callback<ApiResponse<Contact>>() {
+        services.loadContactsByUrn("fcm:" + getPreferences().getFcmToken()).enqueue(new Callback<ApiResponse<Contact>>() {
             @Override
             public void onResponse(Call<ApiResponse<Contact>> call, Response<ApiResponse<Contact>> response) {
                 if (response.isSuccessful() && response.body().getCount() > 0) {
@@ -221,17 +221,9 @@ public class FcmClient {
         services.saveContact(contact).execute();
     }
 
-    public static Response<Contact> saveContactWithToken(String FcmClientToken, String token) throws java.io.IOException {
-        ContactBuilder contactBuilder = new ContactBuilder();
-        contactBuilder.setFcmId(FcmClientToken);
-
-        return contactBuilder.saveContact(host, token).execute();
-    }
-
-    public static void forceRegistration() {
-        Class<? extends FcmClientRegistrationIntentService> registrationIntentService =
-                registrationServiceClass != null ? registrationServiceClass : FcmClientRegistrationIntentService.class;
-        context.startService(new Intent(context, registrationIntentService));
+    public static Response<FcmRegistrationResponse> saveContactWithToken(String urn, String fcmToken, String token) throws java.io.IOException {
+        RapidProServices rapidProServices = new RapidProServices(host, token);
+        return rapidProServices.registerFcmContact(channel, urn, fcmToken).execute();
     }
 
     @NonNull
@@ -239,14 +231,19 @@ public class FcmClient {
         return new IllegalStateException("Response not successful. HTTP Code: " + response.code() + " Response: " + response.raw());
     }
 
-    private static void registerFcmIfNeeded() {
-        if (forceRegistration || TextUtils.isEmpty(preferences.getIdentity())) {
-            forceRegistration();
+    private static void registerContactIfNeeded(String urn) {
+        if (TextUtils.isEmpty(preferences.getFcmToken()) || TextUtils.isEmpty(preferences.getContactUuid())) {
+            registerContact(urn);
         }
     }
 
-    public static void setForceRegistration(Boolean forceRegistration) {
-        FcmClient.forceRegistration = forceRegistration;
+    public static void registerContact(String urn) {
+        Class<? extends FcmClientRegistrationIntentService> registrationIntentService =
+                registrationServiceClass != null ? registrationServiceClass : FcmClientRegistrationIntentService.class;
+
+        Intent registrationIntent = new Intent(context, registrationIntentService);
+        registrationIntent.putExtra(FcmClientRegistrationIntentService.EXTRA_URN, urn);
+        context.startService(registrationIntent);
     }
 
     public static Preferences getPreferences() {

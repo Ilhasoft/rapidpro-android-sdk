@@ -14,7 +14,8 @@ public class Preferences {
 
     public static final String REGISTRATION_COMPLETE = "br.com.ilhasoft.push.RegistrationCompleted";
 
-    private static final String KEY_IDENTITY = "identity";
+    private static final String KEY_URN = "urn";
+    private static final String KEY_FCM_TOKEN = "fcmToken";
     private static final String KEY_CONTACT_UUID = "contactUuid";
 
     private static final String PREFERENCES_NAME = "io.rapidpro.sdk.preferences";
@@ -39,13 +40,22 @@ public class Preferences {
         return this;
     }
 
-    public Preferences setIdentity(String identity) {
-        this.objects.put(getKey(KEY_IDENTITY), identity);
+    public Preferences setUrn(String urn) {
+        this.objects.put(getKey(KEY_URN), urn);
         return this;
     }
 
-    public String getIdentity() {
-        return sharedPreferences.getString(getKey(KEY_IDENTITY), null);
+    public String getUrn() {
+        return sharedPreferences.getString(getKey(KEY_URN), null);
+    }
+
+    public Preferences setFcmToken(String fcmToken) {
+        this.objects.put(getKey(KEY_FCM_TOKEN), fcmToken);
+        return this;
+    }
+
+    public String getFcmToken() {
+        return sharedPreferences.getString(getKey(KEY_FCM_TOKEN), null);
     }
 
     public void apply() {

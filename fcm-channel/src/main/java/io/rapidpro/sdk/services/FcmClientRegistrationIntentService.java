@@ -8,9 +8,12 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.Collections;
+
 import io.rapidpro.sdk.FcmClient;
-import io.rapidpro.sdk.core.adapters.ContactBuilder;
 import io.rapidpro.sdk.core.models.Contact;
+import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
+import io.rapidpro.sdk.core.network.RapidProServices;
 import io.rapidpro.sdk.persistence.Preferences;
 import retrofit2.Response;
 
@@ -21,6 +24,8 @@ public class FcmClientRegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegistrationIntent";
 
+    public static final String EXTRA_URN = "urn";
+
     public FcmClientRegistrationIntentService() {
         super(TAG);
     }
@@ -28,17 +33,22 @@ public class FcmClientRegistrationIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
+            String urn = intent.getStringExtra(EXTRA_URN);
             String fcmToken = FirebaseInstanceId.getInstance().getToken();
 
             Preferences preferences = FcmClient.getPreferences();
-            preferences.setIdentity(fcmToken);
-
             Contact contact = null;
+
             if (!TextUtils.isEmpty(FcmClient.getToken())) {
-                Response<Contact> response = saveContactWithToken(fcmToken, FcmClient.getToken());
-                contact = response.body();
-                contact.setPhone(null);
-                preferences.setContactUuid(contact.getUuid());
+                Response<FcmRegistrationResponse> response = saveContactWithToken(urn, fcmToken);
+                FcmRegistrationResponse fcmRegistrationResponse = response.body();
+
+                preferences.setContactUuid(fcmRegistrationResponse.getContactUuid());
+                preferences.setFcmToken(fcmToken);
+                preferences.setUrn(urn);
+
+                contact = new Contact();
+                contact.setUrns(Collections.singletonList(urn));
             }
 
             preferences.apply();
@@ -51,11 +61,9 @@ public class FcmClientRegistrationIntentService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
-    private Response<Contact> saveContactWithToken(String gcmId, String token) throws java.io.IOException {
-        ContactBuilder contactBuilder = new ContactBuilder();
-        contactBuilder.setFcmId(gcmId);
-
-        return contactBuilder.saveContact(FcmClient.getHost(), token).execute();
+    private Response<FcmRegistrationResponse> saveContactWithToken(String urn, String fcmToken) throws java.io.IOException {
+        RapidProServices rapidProServices = new RapidProServices(FcmClient.getHost(), FcmClient.getToken());
+        return rapidProServices.registerFcmContact(FcmClient.getChannel(), urn, fcmToken).execute();
     }
 
     public void onGcmRegistered(String pushIdentity, Contact contact){}

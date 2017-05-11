@@ -26,7 +26,7 @@ public class ChatPresenter {
     }
 
     public void loadMessages() {
-        if (!TextUtils.isEmpty(FcmClient.getPreferences().getIdentity())) {
+        if (!TextUtils.isEmpty(FcmClient.getPreferences().getFcmToken())) {
             view.showLoading();
             FcmClient.loadMessages(new MessagesLoadingListener() {
                 @Override

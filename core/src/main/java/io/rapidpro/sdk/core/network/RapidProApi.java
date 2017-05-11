@@ -1,6 +1,5 @@
 package io.rapidpro.sdk.core.network;
 
-
 import java.util.Map;
 
 import io.rapidpro.sdk.core.models.network.ApiResponse;
@@ -11,6 +10,7 @@ import io.rapidpro.sdk.core.models.FlowRun;
 import io.rapidpro.sdk.core.models.FlowStepSet;
 import io.rapidpro.sdk.core.models.Group;
 import io.rapidpro.sdk.core.models.Message;
+import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -29,11 +29,17 @@ import retrofit2.http.Query;
 public interface RapidProApi {
 
     @FormUrlEncoded
-    @POST("handlers/fcm/{channel}/")
-    Call<ResponseBody> sendReceivedMessage(@Header("Authorization") String token
-            , @Path("channel") String channel
-            , @Field("from") String from
-            , @Field("msg") String msg);
+    @POST("handlers/fcm/register/{channel}/")
+    Call<FcmRegistrationResponse> registerFcmContact(@Path("channel") String channel,
+                                                     @Field("urn") String urn,
+                                                     @Field("fcm_token") String fcmToken);
+
+    @FormUrlEncoded
+    @POST("handlers/fcm/receive/")
+    Call<ResponseBody> sendReceivedMessage(@Path("channel") String channel,
+                                           @Field("from") String from,
+                                           @Field("fcm_token") String fcmToken,
+                                           @Field("msg") String msg);
 
     @GET("api/v1/groups.json")
     Call<Group> listGroups(@Header("Authorization") String token);
