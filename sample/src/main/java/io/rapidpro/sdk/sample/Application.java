@@ -18,7 +18,7 @@ public class Application extends android.app.Application {
         FcmClient.initialize(new FcmClient.Builder(this)
                 .setHost("https://rapidpro.ilhasoft.mobi/")
                 .setToken("f417616c57339f28e07bcedf8d4f23f74614bcb5")
-                .setChannel("b1dac4b8-eace-4ade-86cc-b0e0a3b6aa52")
+                .setChannel("7815c7fb-eed7-41fe-b585-2a244d398fcb")
                 .setRegistrationServiceClass(PushRegistrationService.class)
                 .setUiConfiguration(new UiConfiguration()
                         .setIconResource(R.mipmap.ic_launcher)

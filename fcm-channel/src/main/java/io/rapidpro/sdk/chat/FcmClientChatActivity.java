@@ -27,13 +27,13 @@ public class FcmClientChatActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fcm_client_activity_chat);
-        addPushChatFragment(savedInstanceState);
+        addFcmClientChatFragment(savedInstanceState);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setupToolbar(toolbar);
     }
 
-    private void addPushChatFragment(@Nullable Bundle savedInstanceState) {
+    private void addFcmClientChatFragment(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.content, new FcmClientChatFragment())

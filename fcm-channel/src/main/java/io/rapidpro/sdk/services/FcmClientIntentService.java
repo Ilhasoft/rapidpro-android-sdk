@@ -15,6 +15,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import io.rapidpro.sdk.FcmClient;
 import io.rapidpro.sdk.chat.FcmClientChatActivity;
 import io.rapidpro.sdk.util.BundleHelper;
 
@@ -45,7 +46,9 @@ public class FcmClientIntentService extends FirebaseMessagingService {
             pushReceiveIntent.putExtra(KEY_DATA, BundleHelper.convertToBundleFrom(data));
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
 
-            showLocalNotification(data.get(KEY_TITLE), data.get(KEY_MESSAGE));
+            if (!FcmClient.isChatVisible()) {
+                showLocalNotification(data.get(KEY_TITLE), data.get(KEY_MESSAGE));
+            }
         }
     }
 

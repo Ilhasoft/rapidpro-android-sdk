@@ -29,7 +29,6 @@ import io.rapidpro.sdk.chat.tags.TagsAdapter;
 import io.rapidpro.sdk.core.managers.FlowRunnerManager;
 import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.Type;
-import io.rapidpro.sdk.persistence.Preferences;
 import io.rapidpro.sdk.services.FcmClientIntentService;
 import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
 import io.rapidpro.sdk.util.BundleHelper;
@@ -49,6 +48,8 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
 
     private ChatPresenter presenter;
 
+    public static boolean visible = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +67,24 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
 
         IntentFilter registrationFilter = new IntentFilter(FcmClientRegistrationIntentService.REGISTRATION_COMPLETE);
         getActivity().registerReceiver(onRegisteredReceiver, registrationFilter);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        visible = isVisibleToUser;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        visible = false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        visible = true;
     }
 
     @Override

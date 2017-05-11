@@ -257,6 +257,10 @@ public class FcmClient {
         return !TextUtils.isEmpty(preferences.getFcmToken()) && !TextUtils.isEmpty(preferences.getContactUuid());
     }
 
+    public static boolean isChatVisible() {
+        return FcmClientChatFragment.visible;
+    }
+
     public static Preferences getPreferences() {
         return preferences;
     }
