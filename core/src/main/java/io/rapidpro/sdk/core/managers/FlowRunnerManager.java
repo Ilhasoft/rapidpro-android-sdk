@@ -3,10 +3,9 @@ package io.rapidpro.sdk.core.managers;
 import android.text.InputType;
 
 import java.text.DateFormat;
-import java.util.Date;
 
+import io.rapidpro.sdk.core.models.Flow;
 import io.rapidpro.sdk.core.models.FlowActionSet;
-import io.rapidpro.sdk.core.models.FlowDefinition;
 import io.rapidpro.sdk.core.models.FlowRule;
 import io.rapidpro.sdk.core.models.FlowRuleset;
 import io.rapidpro.sdk.core.models.FlowRun;
@@ -38,25 +37,23 @@ public class FlowRunnerManager {
         return DateFormat.getDateInstance();
     }
 
-    public static boolean validateResponse(FlowDefinition flowDefinition, RulesetResponse response) {
+    public static boolean validateResponse(Flow flow, RulesetResponse response) {
         TypeValidation typeValidation = TypeValidation.getTypeValidationForRule(response.getRule());
-        return ValidationFactory.getInstance(typeValidation).validate(flowDefinition, response);
+        return ValidationFactory.getInstance(typeValidation).validate(flow, response);
     }
 
-    public static boolean isFlowActive(FlowDefinition flowDefinition) {
-        return !FlowRunnerManager.isFlowCompleted(flowDefinition)
-                && !FlowRunnerManager.isFlowExpired(flowDefinition);
-}
-
-    public static boolean isFlowExpired(FlowDefinition flowDefinition) {
-        FlowRun flowRun = flowDefinition.getFlowRun();
-        return flowRun != null && (flowRun.getExpiredOn() != null
-                || (flowRun.getExpiresOn() != null && flowRun.getExpiresOn().before(new Date())));
+    public static boolean isFlowActive(FlowRun flowRun) {
+        return !FlowRunnerManager.isFlowCompleted(flowRun)
+                && !FlowRunnerManager.isFlowExpired(flowRun);
     }
 
-    public static boolean isFlowCompleted(FlowDefinition flowDefinition) {
-        FlowRun flowRun = flowDefinition.getFlowRun();
-        return flowRun != null && flowRun.getCompleted();
+    public static boolean isFlowExpired(FlowRun flowRun) {
+        return flowRun != null && flowRun.getExitType() != null;
+    }
+
+    public static boolean isFlowCompleted(FlowRun flowRun) {
+        return flowRun != null && flowRun.getExitType() != null
+            && flowRun.getExitType().equals(FlowRun.EXIT_TYPE_COMPLETED);
     }
 
     public static boolean isLastActionSet(FlowActionSet flowActionSet) {
@@ -64,17 +61,17 @@ public class FlowRunnerManager {
                 || flowActionSet.getDestination().isEmpty();
     }
 
-    public static boolean hasRecursiveDestination(FlowDefinition flowDefinition, FlowRuleset ruleSet, FlowRule rule) {
+    public static boolean hasRecursiveDestination(Flow flow, FlowRuleset ruleSet, FlowRule rule) {
         if(rule.getDestination() != null) {
-            FlowActionSet actionSet = getFlowActionSetByUuid(flowDefinition, rule.getDestination());
+            FlowActionSet actionSet = getFlowActionSetByUuid(flow, rule.getDestination());
             return actionSet != null && actionSet.getDestination() != null
                 && actionSet.getDestination().equals(ruleSet.getUuid());
         }
         return false;
     }
 
-    public static FlowActionSet getFlowActionSetByUuid(FlowDefinition flowDefinition, String destination) {
-        for (FlowActionSet actionSet : flowDefinition.getActionSets()) {
+    public static FlowActionSet getFlowActionSetByUuid(Flow flow, String destination) {
+        for (FlowActionSet actionSet : flow.getActionSets()) {
             if(destination.equals(actionSet.getUuid())) {
                 return actionSet;
             }

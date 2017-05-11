@@ -72,6 +72,10 @@ public class RapidProServices {
         rapidProApi = retrofit.create(RapidProApi.class);
     }
 
+    public Call<ApiResponse<FlowRun>> loadRuns(String userUuid) {
+        return rapidProApi.listRuns(token, userUuid, null);
+    }
+
     public Call<ApiResponse<FlowRun>> loadRuns(String userUuid, Date after) {
         return rapidProApi.listRuns(token, userUuid, gsonDateTypeAdapter.serializeDate(after));
     }
@@ -97,7 +101,7 @@ public class RapidProServices {
     }
 
     public Call<Contact> saveContact(Contact contact) {
-        return rapidProApi.saveContact(token, contact);
+        return rapidProApi.saveContact(token, contact.getUuid(), contact);
     }
 
     public Call<ApiResponse<Message>> loadMessages(String contactUuid) {

@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 import io.rapidpro.sdk.core.managers.FlowRunnerManager;
-import io.rapidpro.sdk.core.models.FlowDefinition;
+import io.rapidpro.sdk.core.models.Flow;
 import io.rapidpro.sdk.core.models.RulesetResponse;
 
 /**
@@ -13,7 +13,7 @@ import io.rapidpro.sdk.core.models.RulesetResponse;
 public class DateAfterValidation extends DateValidation implements FlowRuleValidation {
 
     @Override
-    public boolean validate(FlowDefinition flowDefinition, RulesetResponse response) {
+    public boolean validate(Flow flow, RulesetResponse response) {
         try {
             Integer timeDelta = getTimeDeltaValue(response);
             Date deltaTime = getDeltaTime(timeDelta);

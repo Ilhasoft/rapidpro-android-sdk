@@ -16,7 +16,7 @@ public class PushRegistrationService extends FcmClientRegistrationIntentService 
 
     @Override
     public void onFcmRegistered(String pushIdentity, Contact contact) {
-        contact.setName("IlhaPush Sample User");
+        contact.setName("RapidPRO Sample User");
         contact.setEmail("sample@gmail.com");
 
         try {

@@ -41,6 +41,8 @@ public class FcmClient {
     private static Preferences preferences;
     private static RapidProServices services;
 
+    public static final String URN_PREFIX_FCM = "fcm:";
+
     FcmClient() {}
 
     public static void initialize(Builder builder) {

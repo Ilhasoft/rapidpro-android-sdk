@@ -18,6 +18,9 @@ public class FlowStep implements Parcelable {
     @SerializedName("arrived_on")
     private Date arrivedOn;
 
+    @SerializedName("time")
+    private Date time;
+
     private List<FlowAction> actions;
 
     public String getNode() {
@@ -44,6 +47,14 @@ public class FlowStep implements Parcelable {
         this.actions = actions;
     }
 
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -52,8 +63,9 @@ public class FlowStep implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.node);
-        dest.writeLong(arrivedOn != null ? arrivedOn.getTime() : -1);
-        dest.writeTypedList(actions);
+        dest.writeLong(this.arrivedOn != null ? this.arrivedOn.getTime() : -1);
+        dest.writeLong(this.time != null ? this.time.getTime() : -1);
+        dest.writeTypedList(this.actions);
     }
 
     public FlowStep() {
@@ -63,14 +75,18 @@ public class FlowStep implements Parcelable {
         this.node = in.readString();
         long tmpArrivedOn = in.readLong();
         this.arrivedOn = tmpArrivedOn == -1 ? null : new Date(tmpArrivedOn);
+        long tmpTime = in.readLong();
+        this.time = tmpTime == -1 ? null : new Date(tmpTime);
         this.actions = in.createTypedArrayList(FlowAction.CREATOR);
     }
 
     public static final Creator<FlowStep> CREATOR = new Creator<FlowStep>() {
+        @Override
         public FlowStep createFromParcel(Parcel source) {
             return new FlowStep(source);
         }
 
+        @Override
         public FlowStep[] newArray(int size) {
             return new FlowStep[size];
         }

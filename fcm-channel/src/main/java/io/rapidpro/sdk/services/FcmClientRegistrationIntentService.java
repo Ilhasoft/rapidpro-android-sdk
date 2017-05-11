@@ -50,7 +50,8 @@ public class FcmClientRegistrationIntentService extends IntentService {
                 preferences.setUrn(urn);
 
                 contact = new Contact();
-                contact.setUrns(Collections.singletonList(urn));
+                contact.setUuid(fcmRegistrationResponse.getContactUuid());
+                contact.setUrns(Collections.singletonList(FcmClient.URN_PREFIX_FCM + urn));
             }
 
             preferences.commit();

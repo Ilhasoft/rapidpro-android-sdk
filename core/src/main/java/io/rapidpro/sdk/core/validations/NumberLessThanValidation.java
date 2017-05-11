@@ -1,6 +1,6 @@
 package io.rapidpro.sdk.core.validations;
 
-import io.rapidpro.sdk.core.models.FlowDefinition;
+import io.rapidpro.sdk.core.models.Flow;
 import io.rapidpro.sdk.core.models.RulesetResponse;
 
 /**
@@ -9,7 +9,7 @@ import io.rapidpro.sdk.core.models.RulesetResponse;
 public class NumberLessThanValidation implements FlowRuleValidation {
 
     @Override
-    public boolean validate(FlowDefinition flowDefinition, RulesetResponse response) {
+    public boolean validate(Flow flow, RulesetResponse response) {
         try {
             String testValue = response.getRule().getTest().getTest().values().iterator().next();
 
