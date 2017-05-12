@@ -11,6 +11,5 @@
     android:gravity="center"
     android:maxLines="1"
     android:clickable="true"
-    android:foreground="?attr/selectableItemBackground"
     android:background="@drawable/fcm_client_shape_round"
     tools:text="Olhar Digital" />

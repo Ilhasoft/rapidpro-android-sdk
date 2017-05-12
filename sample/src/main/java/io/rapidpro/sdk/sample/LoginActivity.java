@@ -1,5 +1,6 @@
 package io.rapidpro.sdk.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startChatBot() {
-        FcmClient.startFcmClientChatActivity(LoginActivity.this);
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 

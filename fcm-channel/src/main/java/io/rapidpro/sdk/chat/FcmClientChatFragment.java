@@ -11,7 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,9 +65,6 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
 
         presenter = new FcmClientChatPresenter(this);
         presenter.loadMessages();
-
-        IntentFilter registrationFilter = new IntentFilter(FcmClientRegistrationIntentService.REGISTRATION_COMPLETE);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(onRegisteredReceiver, registrationFilter);
     }
 
     @Override
@@ -88,19 +85,13 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
         visible = true;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(onRegisteredReceiver);
-    }
-
     @SuppressWarnings("ConstantConditions")
     private void setupView(View view) {
         message = (EditText) view.findViewById(R.id.message);
         adapter = new ChatMessagesAdapter();
 
-        int spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
-                , 5, getResources().getDisplayMetrics());
+        tags = (RecyclerView) view.findViewById(R.id.tags);
+        int spacing = tags.getPaddingBottom();
 
         SpaceItemDecoration messagesItemDecoration = new SpaceItemDecoration();
         messagesItemDecoration.setVerticalSpaceHeight(spacing);
@@ -113,7 +104,6 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
         SpaceItemDecoration tagsItemDecoration = new SpaceItemDecoration();
         tagsItemDecoration.setHorizontalSpaceWidth(spacing);
 
-        tags = (RecyclerView) view.findViewById(R.id.tags);
         tags.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         tags.addItemDecoration(tagsItemDecoration);
 
@@ -126,14 +116,35 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
     @Override
     public void onStart() {
         super.onStart();
-        IntentFilter messagesBroadcastFilter = new IntentFilter(FcmClientIntentService.ACTION_MESSAGE_RECEIVED);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(messagesReceiver, messagesBroadcastFilter);
+        registerBroadcasts(getContext());
+    }
+
+    public void registerBroadcasts(Context context) {
+        if (context != null) {
+            LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+
+            IntentFilter registrationFilter = new IntentFilter(FcmClientRegistrationIntentService.REGISTRATION_COMPLETE);
+            localBroadcastManager.registerReceiver(onRegisteredReceiver, registrationFilter);
+
+            IntentFilter messagesBroadcastFilter = new IntentFilter(FcmClientIntentService.ACTION_MESSAGE_RECEIVED);
+            localBroadcastManager.registerReceiver(messagesReceiver, messagesBroadcastFilter);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(messagesReceiver);
+        unregisterBroadcasts(getContext());
+    }
+
+    public void unregisterBroadcasts(Context context) {
+        try {
+            LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+            localBroadcastManager.unregisterReceiver(messagesReceiver);
+            localBroadcastManager.unregisterReceiver(onRegisteredReceiver);
+        } catch(Exception exception) {
+            Log.e("FcmClientChat", "onStop: ", exception);
+        }
     }
 
     private BroadcastReceiver messagesReceiver = new BroadcastReceiver() {

@@ -141,7 +141,7 @@ class FcmClientChatPresenter {
             public void onResponse(Call<ApiResponse<Message>> call, Response<ApiResponse<Message>> response) {
                 view.dismissLoading();
                 if (response.isSuccessful()) {
-                    view.onMessagesLoaded(response.body().getResults());
+                    onMessagesLoaded(response.body().getResults());
                 } else {
                     view.showMessage(R.string.fcm_client_error_load_messages);
                 }
@@ -152,6 +152,11 @@ class FcmClientChatPresenter {
                 onRequestFailed();
             }
         });
+    }
+
+    private void onMessagesLoaded(List<Message> messages) {
+        FcmClient.getPreferences().setUnreadMessages(0).apply();
+        view.onMessagesLoaded(messages);
     }
 
     void loadMessage(Bundle data) {

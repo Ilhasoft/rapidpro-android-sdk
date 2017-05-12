@@ -16,6 +16,7 @@ public class Preferences {
     private static final String KEY_URN = "urn";
     private static final String KEY_FCM_TOKEN = "fcmToken";
     private static final String KEY_CONTACT_UUID = "contactUuid";
+    private static final String KEY_UNREAD_MESSAGES = "unreadMessages";
 
     private static final String PREFERENCES_NAME = "io.rapidpro.sdk.preferences";
 
@@ -50,6 +51,15 @@ public class Preferences {
 
     public Preferences setFcmToken(String fcmToken) {
         this.objects.put(getKey(KEY_FCM_TOKEN), fcmToken);
+        return this;
+    }
+
+    public int getUnreadMessages() {
+        return Integer.valueOf(sharedPreferences.getString(getKey(KEY_UNREAD_MESSAGES), "0"));
+    }
+
+    public Preferences setUnreadMessages(int unreadMessages) {
+        this.objects.put(getKey(KEY_UNREAD_MESSAGES), String.valueOf(unreadMessages));
         return this;
     }
 

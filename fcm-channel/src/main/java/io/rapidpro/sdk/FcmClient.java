@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import java.io.IOException;
 import java.util.Collections;
 
 import io.rapidpro.sdk.chat.FcmClientChatActivity;
@@ -13,7 +12,6 @@ import io.rapidpro.sdk.chat.FcmClientChatFragment;
 import io.rapidpro.sdk.core.models.Contact;
 import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
 import io.rapidpro.sdk.core.network.RapidProServices;
-import io.rapidpro.sdk.listeners.ContactListener;
 import io.rapidpro.sdk.listeners.SendMessageListener;
 import io.rapidpro.sdk.persistence.Preferences;
 import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
@@ -68,6 +66,10 @@ public class FcmClient {
 
     public static void startFcmClientChatActivity(Context context) {
         startFcmClientChatActivity(context, token, channel);
+    }
+
+    public static FcmClientChatFragment createFcmClientChatFragment() {
+        return new FcmClientChatFragment();
     }
 
     public static FcmClientChatFragment getFcmClientChatFragment(String token, String channel) {

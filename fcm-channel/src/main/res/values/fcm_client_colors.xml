@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="fcm_client_gray">#fafafa</color>
+    <color name="fcm_client_gray_light">#E6E6E6</color>
     <color name="fcm_client_gray_dark">#e7e7e7</color>
+    <color name="fcm_client_gray_dark_2">#A2A2A2</color>
     <color name="fcm_client_blue">#27a4e7</color>
+    <color name="fcm_client_red">#FB2727</color>
+
+    <color name="fcm_client_orange">#FFFF9600</color>
+    <color name="floatingmenu_popup_color">#ffffff</color>
 </resources>

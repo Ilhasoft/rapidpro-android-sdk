@@ -22,6 +22,6 @@ public class Application extends android.app.Application {
                 .setRegistrationServiceClass(PushRegistrationService.class)
                 .setUiConfiguration(new UiConfiguration()
                         .setIconResource(R.mipmap.ic_launcher)
-                        .setTitleString("RapidCon")));
+                        .setTitleString("RapidPRO Sample SDK")));
     }
 }

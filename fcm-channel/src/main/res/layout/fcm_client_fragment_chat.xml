@@ -85,7 +85,6 @@
         android:padding="15dp"
         android:scaleType="center"
         android:background="@android:color/white"
-        android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
         android:src="@drawable/fcm_client_ic_send_message" />
 

@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
@@ -17,6 +19,8 @@ import java.util.Map;
 
 import io.rapidpro.sdk.FcmClient;
 import io.rapidpro.sdk.chat.FcmClientChatActivity;
+import io.rapidpro.sdk.chat.menu.FcmClientMenuService;
+import io.rapidpro.sdk.persistence.Preferences;
 import io.rapidpro.sdk.util.BundleHelper;
 
 /**
@@ -44,12 +48,35 @@ public class FcmClientIntentService extends FirebaseMessagingService {
         if (isRapidproType(type)) {
             Intent pushReceiveIntent = new Intent(ACTION_MESSAGE_RECEIVED);
             pushReceiveIntent.putExtra(KEY_DATA, BundleHelper.convertToBundleFrom(data));
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
 
             if (!FcmClient.isChatVisible()) {
+                int unreadMessages = increaseUnreadMessages();
+                if (!FcmClientMenuService.isVisible()) {
+                    showFloatingMenu(unreadMessages);
+                }
                 showLocalNotification(data.get(KEY_TITLE), data.get(KEY_MESSAGE));
             }
+            LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
         }
+    }
+
+    private void showFloatingMenu(int unreadMessages) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Settings.canDrawOverlays(this)) {
+                FcmClientMenuService.showFloatingMenu(getApplicationContext(), unreadMessages);
+            }
+        } else {
+            FcmClientMenuService.showFloatingMenu(getApplicationContext(), unreadMessages);
+        }
+    }
+
+    private int increaseUnreadMessages() {
+        Preferences preferences = new Preferences(this);
+        int newUnreadMessages = preferences.getUnreadMessages() + 1;
+        preferences.setUnreadMessages(newUnreadMessages);
+        preferences.commit();
+
+        return newUnreadMessages;
     }
 
     private void showLocalNotification(String title, String message) {
