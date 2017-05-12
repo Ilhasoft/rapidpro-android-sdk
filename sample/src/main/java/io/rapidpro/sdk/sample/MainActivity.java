@@ -1,9 +1,11 @@
 package io.rapidpro.sdk.sample;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,12 +21,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.content, FcmClient.createFcmClientChatFragment())
                     .commit();
         }
+        requestPermissionIfNeeded();
         setupView();
+    }
+
+    private void requestPermissionIfNeeded() {
+        if (!FcmClient.hasFloatingPermission()) {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.permission_floating_chat)
+                    .setNegativeButton(R.string.no, null)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FcmClient.requestFloatingPermissions();
+                        }
+                    }).show();
+        }
     }
 
     @SuppressWarnings("ConstantConditions")

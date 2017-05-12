@@ -69,7 +69,7 @@ public class FcmClientChatActivity extends AppCompatActivity {
     @ColorInt
     private int getToolbarColor() {
         int toolbarColorResource = FcmClient.getUiConfiguration().getToolbarColor();
-        return toolbarColorResource == UiConfiguration.INVALID_COLOR ? fetchColorPrimary() :
+        return toolbarColorResource == UiConfiguration.INVALID_VALUE ? fetchColorPrimary() :
                 getResources().getColor(toolbarColorResource);
     }
 

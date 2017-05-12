@@ -1,7 +1,14 @@
 package io.rapidpro.sdk;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -176,6 +183,35 @@ public class FcmClient {
 
     public static Preferences getPreferences() {
         return preferences;
+    }
+
+    @DrawableRes
+    public static int getAppIcon() {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo info = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            return info.icon;
+        } catch (Exception exception) {
+            return R.drawable.fcm_client_ic_send_message;
+        }
+    }
+
+    public static void requestFloatingPermissionsIfNeeded() {
+        if (!hasFloatingPermission()) {
+            requestFloatingPermissions();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static void requestFloatingPermissions() {
+        Intent drawOverlaysSettingsIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+        drawOverlaysSettingsIntent.setData(Uri.parse("package:" + context.getPackageName()));
+        context.startActivity(drawOverlaysSettingsIntent);
+    }
+
+    public static boolean hasFloatingPermission() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+            || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(context));
     }
 
     public static Context getContext() {

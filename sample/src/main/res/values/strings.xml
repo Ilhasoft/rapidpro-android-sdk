@@ -3,4 +3,7 @@
     <string name="save">Save</string>
 
     <string name="title_floating">Float</string>
+    <string name="permission_floating_chat">Você deseja dar permissão para o chat flutuante?</string>
+    <string name="no">Não</string>
+    <string name="yes">Sim</string>
 </resources>

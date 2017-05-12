@@ -16,13 +16,16 @@ import io.rapidpro.sdk.chat.FcmClientChatFragment;
 /**
  * A Hover menu screen that does not take up the entire screen.
  */
-public class FcmClientNavigatorContent implements NavigatorContent {
+class FcmClientNavigatorContent implements NavigatorContent {
 
     private final Context mContext;
     private final FcmClientChatFragment fragment;
     private ViewGroup rootView;
+    private View chatFragmentView;
 
-    public FcmClientNavigatorContent(@NonNull Context context) {
+    private boolean created = false;
+
+    FcmClientNavigatorContent(@NonNull Context context) {
         mContext = context.getApplicationContext();
         fragment = new FcmClientChatFragment();
     }
@@ -40,17 +43,19 @@ public class FcmClientNavigatorContent implements NavigatorContent {
             title.setText(FcmClient.getUiConfiguration().getTitleString());
 
             ViewGroup content = (ViewGroup) rootView.findViewById(R.id.content);
-            View view = inflater.inflate(R.layout.fcm_client_fragment_chat, null);
-            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
-            content.addView(view);
-
-            fragment.onViewCreated(view, null);
+            chatFragmentView = inflater.inflate(R.layout.fcm_client_fragment_chat, null);
+            chatFragmentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
+            content.addView(chatFragmentView);
         }
         return rootView;
     }
 
     @Override
     public void onShown(@NonNull Navigator navigator) {
+        if (!created) {
+            fragment.onViewCreated(chatFragmentView, null);
+            created = true;
+        }
         fragment.registerBroadcasts(mContext);
     }
 

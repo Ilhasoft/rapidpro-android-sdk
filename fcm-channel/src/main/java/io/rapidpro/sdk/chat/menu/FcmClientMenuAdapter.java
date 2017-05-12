@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import io.mattcarroll.hover.HoverMenuAdapter;
 import io.mattcarroll.hover.NavigatorContent;
+import io.rapidpro.sdk.FcmClient;
 import io.rapidpro.sdk.R;
 
 /**
@@ -48,7 +49,8 @@ class FcmClientMenuAdapter implements HoverMenuAdapter {
 
     @Override
     public View getTabView(int position) {
-        return createTabView(R.drawable.fcm_client_ic_send_message);
+        int iconResource = FcmClient.getUiConfiguration().getIconFloatingChat();
+        return createTabView(iconResource);
     }
 
     @Override

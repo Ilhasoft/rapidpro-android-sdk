@@ -8,16 +8,19 @@ import android.support.annotation.DrawableRes;
  */
 public class UiConfiguration {
 
-    public static final int INVALID_COLOR = -1;
+    public static final int INVALID_VALUE = -1;
 
     @DrawableRes
     private int backResource = R.drawable.fcm_client_ic_arrow_back_white;
 
     @DrawableRes
-    private int iconResource = R.drawable.fcm_client_ic_send_message;
+    private int iconResource = INVALID_VALUE;
+
+    @DrawableRes
+    private int iconFloatingChat = INVALID_VALUE;
 
     @ColorRes
-    private int toolbarColor = INVALID_COLOR;
+    private int toolbarColor = INVALID_VALUE;
 
     @ColorRes
     private int titleColor = android.R.color.white;
@@ -34,7 +37,7 @@ public class UiConfiguration {
     }
 
     public int getIconResource() {
-        return iconResource;
+        return iconResource != UiConfiguration.INVALID_VALUE ? iconResource : FcmClient.getAppIcon();
     }
 
     public UiConfiguration setIconResource(int iconResource) {
@@ -66,6 +69,15 @@ public class UiConfiguration {
 
     public UiConfiguration setTitleString(String titleString) {
         this.titleString = titleString;
+        return this;
+    }
+
+    public int getIconFloatingChat() {
+        return iconFloatingChat != UiConfiguration.INVALID_VALUE ? iconFloatingChat : FcmClient.getAppIcon();
+    }
+
+    public UiConfiguration setIconFloatingChat(int iconFloatingChat) {
+        this.iconFloatingChat = iconFloatingChat;
         return this;
     }
 }
