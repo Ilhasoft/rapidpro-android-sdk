@@ -226,7 +226,7 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
             if (!messageText.isEmpty()) {
                 presenter.sendMessage(messageText);
             } else {
-                message.setError(getString(R.string.fcm_client_error_send_message));
+                message.setError(getContext().getString(R.string.fcm_client_error_send_message));
             }
         }
     };
