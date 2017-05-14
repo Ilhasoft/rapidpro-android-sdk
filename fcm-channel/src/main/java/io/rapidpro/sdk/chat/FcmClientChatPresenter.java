@@ -155,7 +155,6 @@ class FcmClientChatPresenter {
     }
 
     private void onMessagesLoaded(List<Message> messages) {
-        FcmClient.getPreferences().setUnreadMessages(0).apply();
         view.onMessagesLoaded(messages);
     }
 

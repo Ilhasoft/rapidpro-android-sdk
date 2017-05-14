@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.List;
 
+import io.rapidpro.sdk.FcmClient;
 import io.rapidpro.sdk.R;
 import io.rapidpro.sdk.chat.tags.OnTagClickListener;
 import io.rapidpro.sdk.chat.tags.TagsAdapter;
@@ -54,17 +55,27 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        cleanUnreadMessages();
         return inflater.inflate(R.layout.fcm_client_fragment_chat, container, false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        cleanUnreadMessages();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setupView(view);
 
         presenter = new FcmClientChatPresenter(this);
         presenter.loadMessages();
+    }
+
+    private void cleanUnreadMessages() {
+        FcmClient.getPreferences().setUnreadMessages(0).commit();
     }
 
     @Override

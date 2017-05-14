@@ -77,7 +77,7 @@ public class FcmClientMenuService extends HoverMenuService {
     public void onHoverMenuExpanded() {
         expanded = true;
 
-        FcmClient.getPreferences().setUnreadMessages(0).apply();
+        FcmClient.getPreferences().setUnreadMessages(0).commit();
         setUnreadMessages(0);
     }
 
@@ -101,7 +101,7 @@ public class FcmClientMenuService extends HoverMenuService {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (!expanded) {
-                unreadMessages = FcmClient.getPreferences().getUnreadMessages() + 1;
+                unreadMessages = FcmClient.getPreferences().getUnreadMessages();
                 setUnreadMessages(unreadMessages);
             }
         }
