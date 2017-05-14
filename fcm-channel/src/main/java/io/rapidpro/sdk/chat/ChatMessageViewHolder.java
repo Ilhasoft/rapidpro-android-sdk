@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
-import java.util.TimeZone;
 
 import io.rapidpro.sdk.R;
 import io.rapidpro.sdk.core.models.Message;
