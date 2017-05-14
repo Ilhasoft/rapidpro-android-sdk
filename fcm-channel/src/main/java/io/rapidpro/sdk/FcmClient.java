@@ -205,6 +205,7 @@ public class FcmClient {
     @TargetApi(Build.VERSION_CODES.M)
     public static void requestFloatingPermissions() {
         Intent drawOverlaysSettingsIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+        drawOverlaysSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         drawOverlaysSettingsIntent.setData(Uri.parse("package:" + context.getPackageName()));
         context.startActivity(drawOverlaysSettingsIntent);
     }
