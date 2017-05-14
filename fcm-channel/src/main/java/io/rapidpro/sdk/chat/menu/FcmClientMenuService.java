@@ -11,6 +11,7 @@ import io.mattcarroll.hover.HoverMenuAdapter;
 import io.mattcarroll.hover.Navigator;
 import io.mattcarroll.hover.defaulthovermenu.DefaultNavigator;
 import io.mattcarroll.hover.defaulthovermenu.window.HoverMenuService;
+import io.rapidpro.sdk.FcmClient;
 import io.rapidpro.sdk.R;
 import io.rapidpro.sdk.persistence.Preferences;
 import io.rapidpro.sdk.services.FcmClientIntentService;
@@ -25,6 +26,7 @@ public class FcmClientMenuService extends HoverMenuService {
     public static final String EXTRA_UNREAD_MESSAGES = "unreadMessages";
 
     private static boolean visible = false;
+    private static boolean expanded = false;
 
     private FcmClientMenuAdapter menuAdapter;
     private int unreadMessages = 0;
@@ -67,6 +69,19 @@ public class FcmClientMenuService extends HoverMenuService {
     }
 
     @Override
+    public void onHoverMenuCollapsed() {
+        expanded = false;
+    }
+
+    @Override
+    public void onHoverMenuExpanded() {
+        expanded = true;
+
+        FcmClient.getPreferences().setUnreadMessages(0).apply();
+        setUnreadMessages(0);
+    }
+
+    @Override
     protected Context getContextForHoverMenu() {
         return new ContextThemeWrapper(this, R.style.AppTheme);
     }
@@ -85,8 +100,10 @@ public class FcmClientMenuService extends HoverMenuService {
     private BroadcastReceiver onMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            unreadMessages = unreadMessages + 1;
-            setUnreadMessages(unreadMessages);
+            if (!expanded) {
+                unreadMessages = FcmClient.getPreferences().getUnreadMessages() + 1;
+                setUnreadMessages(unreadMessages);
+            }
         }
     };
 
@@ -98,5 +115,9 @@ public class FcmClientMenuService extends HoverMenuService {
 
     public static boolean isVisible() {
         return visible;
+    }
+
+    public static boolean isExpanded() {
+        return expanded;
     }
 }

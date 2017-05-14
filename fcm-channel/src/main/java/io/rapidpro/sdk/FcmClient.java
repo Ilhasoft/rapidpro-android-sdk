@@ -16,6 +16,7 @@ import java.util.Collections;
 
 import io.rapidpro.sdk.chat.FcmClientChatActivity;
 import io.rapidpro.sdk.chat.FcmClientChatFragment;
+import io.rapidpro.sdk.chat.menu.FcmClientMenuService;
 import io.rapidpro.sdk.core.models.Contact;
 import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
 import io.rapidpro.sdk.core.network.RapidProServices;
@@ -174,7 +175,7 @@ public class FcmClient {
     }
 
     public static boolean isChatVisible() {
-        return FcmClientChatFragment.visible;
+        return FcmClientChatFragment.visible || FcmClientMenuService.isExpanded();
     }
 
     public static void setPreferences(Preferences preferences) {
@@ -182,6 +183,9 @@ public class FcmClient {
     }
 
     public static Preferences getPreferences() {
+        if (preferences == null) {
+            preferences = new Preferences(context);
+        }
         return preferences;
     }
 

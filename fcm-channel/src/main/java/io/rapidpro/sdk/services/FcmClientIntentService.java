@@ -71,7 +71,7 @@ public class FcmClientIntentService extends FirebaseMessagingService {
     }
 
     private int increaseUnreadMessages() {
-        Preferences preferences = new Preferences(this);
+        Preferences preferences = FcmClient.getPreferences();
         int newUnreadMessages = preferences.getUnreadMessages() + 1;
         preferences.setUnreadMessages(newUnreadMessages);
         preferences.commit();
