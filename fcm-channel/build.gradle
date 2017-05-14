@@ -34,7 +34,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.github.Ilhasoft:hover:87dc6621e8'
+    compile 'com.github.ilhasoft:hover:9e6a7e470a'
 
     compile 'com.google.firebase:firebase-messaging:10.2.4'
     compile 'com.google.firebase:firebase-core:10.2.4'
