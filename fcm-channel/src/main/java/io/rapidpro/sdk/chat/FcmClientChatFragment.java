@@ -184,7 +184,7 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
 
     @Override
     public void showMessage(int messageId) {
-        showMessage(getString(messageId));
+        showMessage(getContext().getString(messageId));
     }
 
     @Override
