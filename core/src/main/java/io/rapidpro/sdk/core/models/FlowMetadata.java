@@ -20,8 +20,6 @@ public class FlowMetadata implements Parcelable {
 
     private Integer revision;
 
-    private Integer id;
-
     @SerializedName("save_on")
     private Date savedOn;
 
@@ -57,20 +55,26 @@ public class FlowMetadata implements Parcelable {
         this.revision = revision;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Date getSavedOn() {
         return savedOn;
     }
 
     public void setSavedOn(Date savedOn) {
         this.savedOn = savedOn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FlowMetadata that = (FlowMetadata) o;
+        return uuid != null ? uuid.equals(that.uuid) : that.uuid == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid != null ? uuid.hashCode() : 0;
     }
 
     @Override
@@ -84,8 +88,7 @@ public class FlowMetadata implements Parcelable {
         dest.writeValue(this.expires);
         dest.writeString(this.name);
         dest.writeValue(this.revision);
-        dest.writeValue(this.id);
-        dest.writeLong(savedOn != null ? savedOn.getTime() : -1);
+        dest.writeLong(this.savedOn != null ? this.savedOn.getTime() : -1);
     }
 
     public FlowMetadata() {
@@ -96,16 +99,17 @@ public class FlowMetadata implements Parcelable {
         this.expires = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
         this.revision = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         long tmpSavedOn = in.readLong();
         this.savedOn = tmpSavedOn == -1 ? null : new Date(tmpSavedOn);
     }
 
     public static final Creator<FlowMetadata> CREATOR = new Creator<FlowMetadata>() {
+        @Override
         public FlowMetadata createFromParcel(Parcel source) {
             return new FlowMetadata(source);
         }
 
+        @Override
         public FlowMetadata[] newArray(int size) {
             return new FlowMetadata[size];
         }

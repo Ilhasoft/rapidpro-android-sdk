@@ -57,12 +57,12 @@ public interface RapidProApi {
     @GET("api/v2/messages.json")
     Call<ApiResponse<Message>> listMessageById(@Header("Authorization") String token, @Query("id") Integer messageId);
 
-    @GET("api/v1/runs.json")
+    @GET("api/v2/runs.json")
     Call<ApiResponse<FlowRun>>  listRuns(@Header("Authorization") String token
             , @Query("contact") String uuid, @Query("after") String after);
 
-    @GET("api/v1/flow_definition.json")
-    Call<FlowDefinition> loadFlowDefinition(@Header("Authorization") String token, @Query("uuid") String flowUuid); //TODO refactor using CALL
+    @GET("api/v2/definitions.json")
+    Call<FlowDefinition> loadFlowDefinition(@Header("Authorization") String token, @Query("flow") String flowUuid);
 
     @POST("api/v1/steps")
     @Headers({ "Accept: application/json", "Content-Type: application/json" })
@@ -74,6 +74,7 @@ public interface RapidProApi {
     @GET("api/v1/contacts.json")
     Call<ApiResponse<Contact>> loadContacts(@Header("Authorization") String token, @Query("urns") String urn);
 
-    @POST("api/v1/contacts.json")
-    Call<Contact> saveContact(@Header("Authorization") String token, @Body Contact contact);
+    @POST("api/v2/contacts.json")
+    Call<Contact> saveContact(@Header("Authorization") String token,
+                              @Query("uuid") String contactUuid, @Body Contact contact);
 }

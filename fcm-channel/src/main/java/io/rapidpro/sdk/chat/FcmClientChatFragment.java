@@ -11,7 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +27,9 @@ import io.rapidpro.sdk.R;
 import io.rapidpro.sdk.chat.tags.OnTagClickListener;
 import io.rapidpro.sdk.chat.tags.TagsAdapter;
 import io.rapidpro.sdk.core.managers.FlowRunnerManager;
+import io.rapidpro.sdk.core.models.FlowRuleset;
 import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.Type;
-import io.rapidpro.sdk.persistence.Preferences;
 import io.rapidpro.sdk.services.FcmClientIntentService;
 import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
 import io.rapidpro.sdk.util.BundleHelper;
@@ -38,7 +38,7 @@ import io.rapidpro.sdk.util.SpaceItemDecoration;
 /**
  * Created by john-mac on 8/30/16.
  */
-public class FcmClientChatFragment extends Fragment implements ChatView {
+public class FcmClientChatFragment extends Fragment implements FcmClientChatView {
 
     private EditText message;
     private RecyclerView messageList;
@@ -47,7 +47,9 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
 
     private ChatMessagesAdapter adapter;
 
-    private ChatPresenter presenter;
+    private FcmClientChatPresenter presenter;
+
+    public static boolean visible = false;
 
     @Nullable
     @Override
@@ -61,17 +63,26 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
 
         setupView(view);
 
-        presenter = new ChatPresenter(this);
+        presenter = new FcmClientChatPresenter(this);
         presenter.loadMessages();
-
-        IntentFilter registrationFilter = new IntentFilter(FcmClientRegistrationIntentService.REGISTRATION_COMPLETE);
-        getActivity().registerReceiver(onRegisteredReceiver, registrationFilter);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        getActivity().unregisterReceiver(onRegisteredReceiver);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        visible = isVisibleToUser;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        visible = false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        visible = true;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -79,8 +90,8 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
         message = (EditText) view.findViewById(R.id.message);
         adapter = new ChatMessagesAdapter();
 
-        int spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
-                , 5, getResources().getDisplayMetrics());
+        tags = (RecyclerView) view.findViewById(R.id.tags);
+        int spacing = tags.getPaddingBottom();
 
         SpaceItemDecoration messagesItemDecoration = new SpaceItemDecoration();
         messagesItemDecoration.setVerticalSpaceHeight(spacing);
@@ -93,7 +104,6 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
         SpaceItemDecoration tagsItemDecoration = new SpaceItemDecoration();
         tagsItemDecoration.setHorizontalSpaceWidth(spacing);
 
-        tags = (RecyclerView) view.findViewById(R.id.tags);
         tags.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         tags.addItemDecoration(tagsItemDecoration);
 
@@ -106,14 +116,35 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
     @Override
     public void onStart() {
         super.onStart();
-        IntentFilter messagesBroadcastFilter = new IntentFilter(FcmClientIntentService.ACTION_MESSAGE_RECEIVED);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(messagesReceiver, messagesBroadcastFilter);
+        registerBroadcasts(getContext());
+    }
+
+    public void registerBroadcasts(Context context) {
+        if (context != null) {
+            LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+
+            IntentFilter registrationFilter = new IntentFilter(FcmClientRegistrationIntentService.REGISTRATION_COMPLETE);
+            localBroadcastManager.registerReceiver(onRegisteredReceiver, registrationFilter);
+
+            IntentFilter messagesBroadcastFilter = new IntentFilter(FcmClientIntentService.ACTION_MESSAGE_RECEIVED);
+            localBroadcastManager.registerReceiver(messagesReceiver, messagesBroadcastFilter);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(messagesReceiver);
+        unregisterBroadcasts(getContext());
+    }
+
+    public void unregisterBroadcasts(Context context) {
+        try {
+            LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+            localBroadcastManager.unregisterReceiver(messagesReceiver);
+            localBroadcastManager.unregisterReceiver(onRegisteredReceiver);
+        } catch(Exception exception) {
+            Log.e("FcmClientChat", "onStop: ", exception);
+        }
     }
 
     private BroadcastReceiver messagesReceiver = new BroadcastReceiver() {
@@ -125,20 +156,20 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
             Message message = BundleHelper.getMessage(data);
             message.setCreatedOn(new Date());
             adapter.addChatMessage(message);
-            onLastMessageChanged(message);
+            onLastMessageChanged();
         }
     };
 
     @Override
     public void onMessagesLoaded(List<Message> messages) {
         adapter.setMessages(messages);
-        onLastMessageChanged(adapter.getLastMessage());
+        onLastMessageChanged();
     }
 
     @Override
     public void onMessageLoaded(Message message) {
         adapter.addChatMessage(message);
-        onLastMessageChanged(message);
+        onLastMessageChanged();
     }
 
     @Override
@@ -151,13 +182,17 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
         progressBar.setVisibility(View.GONE);
     }
 
-    private void onLastMessageChanged(Message lastMessage) {
-        messageList.scrollToPosition(0);
-        if (lastMessage != null && lastMessage.getRuleset() != null
-        && lastMessage.getRuleset().getRules() != null) {
-            Type type = presenter.getFirstType(lastMessage);
+    @Override
+    public void showMessage(int messageId) {
+        showMessage(getString(messageId));
+    }
+
+    @Override
+    public void setCurrentRulesets(FlowRuleset rulesets) {
+        if (rulesets != null && rulesets.getRules() != null) {
+            Type type = presenter.getFirstType(rulesets);
             if (type == Type.Choice) {
-                TagsAdapter tagsAdapter = new TagsAdapter(lastMessage.getRuleset().getRules(), onTagClickListener);
+                TagsAdapter tagsAdapter = new TagsAdapter(rulesets.getRules(), onTagClickListener);
                 tags.setAdapter(tagsAdapter);
                 tags.setVisibility(View.VISIBLE);
             } else {
@@ -167,6 +202,11 @@ public class FcmClientChatFragment extends Fragment implements ChatView {
         } else {
             tags.setVisibility(View.GONE);
         }
+    }
+
+    private void onLastMessageChanged() {
+        messageList.scrollToPosition(0);
+        presenter.loadCurrentRulesets();
     }
 
     @Override

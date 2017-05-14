@@ -2,7 +2,7 @@ package io.rapidpro.sdk.core.validations;
 
 import java.util.Map;
 
-import io.rapidpro.sdk.core.models.FlowDefinition;
+import io.rapidpro.sdk.core.models.Flow;
 import io.rapidpro.sdk.core.models.FlowRuleTest;
 import io.rapidpro.sdk.core.models.RulesetResponse;
 
@@ -12,10 +12,10 @@ import io.rapidpro.sdk.core.models.RulesetResponse;
 public class FieldStartsValidation implements FlowRuleValidation {
 
     @Override
-    public boolean validate(FlowDefinition flowDefinition, RulesetResponse response) {
+    public boolean validate(Flow flow, RulesetResponse response) {
         FlowRuleTest flowRuleTest = response.getRule().getTest();
         Map<String, String> object = (Map<String, String>) flowRuleTest.getTest();
-        return response.getResponse().startsWith(object.get(flowDefinition.getBaseLanguage()));
+        return response.getResponse().startsWith(object.get(flow.getBaseLanguage()));
     }
 
 }

@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import io.rapidpro.sdk.core.managers.FlowRunnerManager;
-import io.rapidpro.sdk.core.models.FlowDefinition;
+import io.rapidpro.sdk.core.models.Flow;
 import io.rapidpro.sdk.core.models.RulesetResponse;
 
 /**
@@ -18,7 +18,7 @@ public class DateValidation implements FlowRuleValidation {
     public static final String DEFAULT_TEST = "@date.today|time_delta:";
 
     @Override
-    public boolean validate(FlowDefinition flowDefinition, RulesetResponse response) {
+    public boolean validate(Flow flow, RulesetResponse response) {
         try {
             Date date = FlowRunnerManager.getDefaultDateFormat().parse(response.getResponse());
             return date != null;

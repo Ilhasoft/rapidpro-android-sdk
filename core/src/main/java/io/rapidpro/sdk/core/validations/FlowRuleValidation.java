@@ -1,6 +1,6 @@
 package io.rapidpro.sdk.core.validations;
 
-import io.rapidpro.sdk.core.models.FlowDefinition;
+import io.rapidpro.sdk.core.models.Flow;
 import io.rapidpro.sdk.core.models.RulesetResponse;
 
 /**
@@ -8,6 +8,6 @@ import io.rapidpro.sdk.core.models.RulesetResponse;
  */
 public interface FlowRuleValidation {
 
-    boolean validate(FlowDefinition flowDefinition, RulesetResponse response);
+    boolean validate(Flow flow, RulesetResponse response);
 
 }

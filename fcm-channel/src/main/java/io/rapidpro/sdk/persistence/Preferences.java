@@ -1,5 +1,6 @@
 package io.rapidpro.sdk.persistence;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ public class Preferences {
     private static final String KEY_URN = "urn";
     private static final String KEY_FCM_TOKEN = "fcmToken";
     private static final String KEY_CONTACT_UUID = "contactUuid";
+    private static final String KEY_UNREAD_MESSAGES = "unreadMessages";
 
     private static final String PREFERENCES_NAME = "io.rapidpro.sdk.preferences";
 
@@ -52,8 +54,26 @@ public class Preferences {
         return this;
     }
 
+    public int getUnreadMessages() {
+        return Integer.valueOf(sharedPreferences.getString(getKey(KEY_UNREAD_MESSAGES), "0"));
+    }
+
+    public Preferences setUnreadMessages(int unreadMessages) {
+        this.objects.put(getKey(KEY_UNREAD_MESSAGES), String.valueOf(unreadMessages));
+        return this;
+    }
+
     public String getFcmToken() {
         return sharedPreferences.getString(getKey(KEY_FCM_TOKEN), null);
+    }
+
+    @SuppressLint("ApplySharedPref")
+    public void commit() {
+        SharedPreferences.Editor editor = this.sharedPreferences.edit();
+        for (String key : objects.keySet()) {
+            editor.putString(key, objects.get(key));
+        }
+        editor.commit();
     }
 
     public void apply() {

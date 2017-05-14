@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.rapidpro.sdk.sample">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".Application">
+        tools:replace="android:allowBackup">
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity android:name="io.rapidpro.sdk.chat.FcmClientChatActivity" />
 
-        <service
-            android:name=".services.ReceiverIntentService">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".services.ReceiverIntentService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -33,14 +37,18 @@
 
         <service
             android:name=".services.PushRegistrationService"
-            android:exported="false"/>
+            android:exported="false" />
 
-        <service android:name="io.rapidpro.sdk.services.FcmClientInstanceIntentIdService"
+        <service
+            android:name="io.rapidpro.sdk.services.FcmClientInstanceIntentIdService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <service
+            android:name="io.rapidpro.sdk.chat.menu.FcmClientMenuService" />
 
     </application>
 

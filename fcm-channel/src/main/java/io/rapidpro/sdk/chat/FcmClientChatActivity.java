@@ -27,13 +27,13 @@ public class FcmClientChatActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fcm_client_activity_chat);
-        addPushChatFragment(savedInstanceState);
+        addFcmClientChatFragment(savedInstanceState);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setupToolbar(toolbar);
     }
 
-    private void addPushChatFragment(@Nullable Bundle savedInstanceState) {
+    private void addFcmClientChatFragment(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.content, new FcmClientChatFragment())
@@ -57,7 +57,7 @@ public class FcmClientChatActivity extends AppCompatActivity {
             toolbar.setTitleTextColor(getResources().getColor(titleColorRes));
             toolbar.setBackgroundColor(getToolbarColor());
             setSupportActionBar(toolbar);
-        }else {
+        } else {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setBackgroundDrawable(new ColorDrawable(getToolbarColor()));
             setActionBarTitleColor(actionBar, FcmClient.getUiConfiguration().getTitleString());
@@ -69,7 +69,7 @@ public class FcmClientChatActivity extends AppCompatActivity {
     @ColorInt
     private int getToolbarColor() {
         int toolbarColorResource = FcmClient.getUiConfiguration().getToolbarColor();
-        return toolbarColorResource == UiConfiguration.INVALID_COLOR ? fetchColorPrimary() :
+        return toolbarColorResource == UiConfiguration.INVALID_VALUE ? fetchColorPrimary() :
                 getResources().getColor(toolbarColorResource);
     }
 

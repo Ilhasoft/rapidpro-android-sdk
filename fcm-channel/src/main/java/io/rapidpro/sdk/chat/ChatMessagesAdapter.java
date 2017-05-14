@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.rapidpro.sdk.FcmClient;
+import io.rapidpro.sdk.UiConfiguration;
 import io.rapidpro.sdk.core.models.Message;
 
 /**
@@ -15,17 +16,20 @@ import io.rapidpro.sdk.core.models.Message;
 public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Message> chatMessages;
+    private final int iconResource;
 
     private ChatMessageViewHolder.OnChatMessageSelectedListener onChatMessageSelectedListener;
 
     public ChatMessagesAdapter() {
         this.chatMessages = new ArrayList<>();
+        this.iconResource = FcmClient.getUiConfiguration().getIconResource() != UiConfiguration.INVALID_VALUE ?
+                FcmClient.getUiConfiguration().getIconResource() : FcmClient.getAppIcon();
         setHasStableIds(true);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ChatMessageViewHolder(parent.getContext(), parent, FcmClient.getUiConfiguration().getIconResource());
+        return new ChatMessageViewHolder(parent.getContext(), parent, iconResource);
     }
 
     @Override
