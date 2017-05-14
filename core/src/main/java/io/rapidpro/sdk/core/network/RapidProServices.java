@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import io.rapidpro.sdk.core.adapters.GsonDateTypeAdapter;
 import io.rapidpro.sdk.core.adapters.HashMapTypeAdapter;
@@ -28,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RapidProServices {
 
     private static final String TOKEN_FORMAT = "Token %s";
+    private static final int TIMEOUT_IN_SECONDS = 1;
 
     private String token;
     private String host;
@@ -53,6 +55,9 @@ public class RapidProServices {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
+                .writeTimeout(TIMEOUT_IN_SECONDS, TimeUnit.MINUTES)
+                .connectTimeout(TIMEOUT_IN_SECONDS, TimeUnit.MINUTES)
+                .readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.MINUTES)
                 .addInterceptor(logging)
                 .build();
 
