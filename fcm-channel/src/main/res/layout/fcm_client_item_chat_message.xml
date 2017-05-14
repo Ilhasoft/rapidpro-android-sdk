@@ -48,6 +48,7 @@
             android:layout_gravity="end"
             android:layout_marginTop="3dp"
             android:textSize="12sp"
+            android:textColor="@color/fcm_client_gray_light_2"
             tools:text="16:00"/>
 
     </LinearLayout>
