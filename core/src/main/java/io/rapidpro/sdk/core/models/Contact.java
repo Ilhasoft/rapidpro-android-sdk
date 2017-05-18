@@ -21,7 +21,7 @@ public class Contact implements Parcelable {
 
     private String email;
 
-    private List<String> groups;
+    private List<Group> groups;
 
     private List<String> urns;
 
@@ -55,11 +55,11 @@ public class Contact implements Parcelable {
         this.language = language;
     }
 
-    public List<String> getGroups() {
+    public List<Group> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<String> groups) {
+    public void setGroups(List<Group> groups) {
         this.groups = groups;
     }
 
@@ -128,12 +128,12 @@ public class Contact implements Parcelable {
         dest.writeString(this.uuid);
         dest.writeString(this.name);
         dest.writeString(this.language);
-        dest.writeStringList(this.groups);
+        dest.writeString(this.email);
+        dest.writeList(this.groups);
         dest.writeStringList(this.urns);
         dest.writeSerializable(this.fields);
-        dest.writeLong(modified_on != null ? modified_on.getTime() : -1);
+        dest.writeLong(this.modified_on != null ? this.modified_on.getTime() : -1);
         dest.writeString(this.phone);
-        dest.writeString(this.email);
     }
 
     public Contact() {
@@ -143,20 +143,23 @@ public class Contact implements Parcelable {
         this.uuid = in.readString();
         this.name = in.readString();
         this.language = in.readString();
-        this.groups = in.createStringArrayList();
+        this.email = in.readString();
+        this.groups = new ArrayList<Group>();
+        in.readList(this.groups, Group.class.getClassLoader());
         this.urns = in.createStringArrayList();
         this.fields = (HashMap<String, Object>) in.readSerializable();
         long tmpModified_on = in.readLong();
         this.modified_on = tmpModified_on == -1 ? null : new Date(tmpModified_on);
         this.phone = in.readString();
-        this.email = in.readString();
     }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {
+        @Override
         public Contact createFromParcel(Parcel source) {
             return new Contact(source);
         }
 
+        @Override
         public Contact[] newArray(int size) {
             return new Contact[size];
         }
