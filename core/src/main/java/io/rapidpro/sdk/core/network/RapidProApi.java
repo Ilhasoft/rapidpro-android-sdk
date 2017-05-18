@@ -45,7 +45,7 @@ public interface RapidProApi {
     Call<Group> listGroups(@Header("Authorization") String token);
 
     @GET("api/v1/fields.json")
-    Call<io.rapidpro.sdk.core.models.Field> listFields(@Header("Authorization") String token);
+    Call<ApiResponse<io.rapidpro.sdk.core.models.Field>> listFields(@Header("Authorization") String token);
 
     @GET("api/v1/boundaries.json")
     Call<Boundary> listBoundaries(@Header("Authorization") String token

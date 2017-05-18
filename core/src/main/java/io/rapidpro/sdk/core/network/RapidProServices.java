@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import io.rapidpro.sdk.core.adapters.GsonDateTypeAdapter;
 import io.rapidpro.sdk.core.adapters.HashMapTypeAdapter;
 import io.rapidpro.sdk.core.models.Contact;
+import io.rapidpro.sdk.core.models.Field;
 import io.rapidpro.sdk.core.models.FlowDefinition;
 import io.rapidpro.sdk.core.models.FlowRun;
 import io.rapidpro.sdk.core.models.Message;
@@ -75,6 +76,10 @@ public class RapidProServices {
                 .build();
 
         rapidProApi = retrofit.create(RapidProApi.class);
+    }
+
+    public Call<ApiResponse<Field>> loadFields() {
+        return rapidProApi.listFields(token);
     }
 
     public Call<ApiResponse<FlowRun>> loadRuns(String userUuid) {
