@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.rapidpro.sdk.core.models.Contact;
+import io.rapidpro.sdk.core.models.Group;
 import io.rapidpro.sdk.core.network.RapidProServices;
 import retrofit2.Call;
 
@@ -26,7 +27,7 @@ public class ContactBuilder {
         return this;
     }
 
-    public ContactBuilder setGroups(final List<String> groups) {
+    public ContactBuilder setGroups(final List<Group> groups) {
         contact.setGroups(groups);
         return this;
     }
