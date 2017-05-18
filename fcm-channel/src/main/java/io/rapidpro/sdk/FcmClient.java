@@ -99,7 +99,7 @@ public class FcmClient {
     }
 
     public static void sendMessage(String message) {
-        services.sendReceivedMessage(channel, preferences.getUrn(), preferences.getFcmToken(), message)
+        services.sendReceivedMessage(channel, getPreferences().getUrn(), getPreferences().getFcmToken(), message)
                 .enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {}
@@ -109,7 +109,7 @@ public class FcmClient {
     }
 
     public static void sendMessage(String message, final SendMessageListener listener) {
-        services.sendReceivedMessage(channel, preferences.getUrn(), preferences.getFcmToken(), message)
+        services.sendReceivedMessage(channel, getPreferences().getUrn(), getPreferences().getFcmToken(), message)
                 .enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -129,8 +129,8 @@ public class FcmClient {
 
     public static Contact getContact() {
         Contact contact = new Contact();
-        contact.setUuid(preferences.getContactUuid());
-        contact.setUrns(Collections.singletonList(preferences.getUrn()));
+        contact.setUuid(getPreferences().getContactUuid());
+        contact.setUrns(Collections.singletonList(getPreferences().getUrn()));
         return contact;
     }
 
@@ -145,7 +145,7 @@ public class FcmClient {
     }
 
     public static void refreshContactToken() {
-        String urn = preferences.getUrn();
+        String urn = getPreferences().getUrn();
         if (!TextUtils.isEmpty(urn)) {
             registerContact(urn);
         }
@@ -167,7 +167,7 @@ public class FcmClient {
     }
 
     public static boolean isContactRegistered() {
-        return !TextUtils.isEmpty(preferences.getFcmToken()) && !TextUtils.isEmpty(preferences.getContactUuid());
+        return !TextUtils.isEmpty(getPreferences().getFcmToken()) && !TextUtils.isEmpty(getPreferences().getContactUuid());
     }
 
     public static RapidProServices getServices() {
