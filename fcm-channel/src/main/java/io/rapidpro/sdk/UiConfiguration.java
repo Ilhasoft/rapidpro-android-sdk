@@ -1,5 +1,6 @@
 package io.rapidpro.sdk;
 
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 
@@ -19,11 +20,11 @@ public class UiConfiguration {
     @DrawableRes
     private int iconFloatingChat = INVALID_VALUE;
 
-    @ColorRes
+    @ColorInt
     private int toolbarColor = INVALID_VALUE;
 
-    @ColorRes
-    private int titleColor = android.R.color.white;
+    @ColorInt
+    private int titleColor = INVALID_VALUE;
 
     private String titleString = "";
 
@@ -49,7 +50,7 @@ public class UiConfiguration {
         return toolbarColor;
     }
 
-    public UiConfiguration setToolbarColor(int toolbarColor) {
+    public UiConfiguration setToolbarColor(@ColorInt int toolbarColor) {
         this.toolbarColor = toolbarColor;
         return this;
     }
@@ -58,7 +59,7 @@ public class UiConfiguration {
         return titleColor;
     }
 
-    public UiConfiguration setTitleColor(int titleColor) {
+    public UiConfiguration setTitleColor(@ColorInt int titleColor) {
         this.titleColor = titleColor;
         return this;
     }

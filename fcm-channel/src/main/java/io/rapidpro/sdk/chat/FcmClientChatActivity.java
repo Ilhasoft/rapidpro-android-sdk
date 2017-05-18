@@ -68,15 +68,14 @@ public class FcmClientChatActivity extends AppCompatActivity {
 
     @ColorInt
     private int getToolbarColor() {
-        int toolbarColorResource = FcmClient.getUiConfiguration().getToolbarColor();
-        return toolbarColorResource == UiConfiguration.INVALID_VALUE ? fetchColorPrimary() :
-                getResources().getColor(toolbarColorResource);
+        int toolbarColor = FcmClient.getUiConfiguration().getToolbarColor();
+        return toolbarColor == UiConfiguration.INVALID_VALUE ? fetchColorPrimary() : toolbarColor;
     }
 
     private void setActionBarTitleColor(ActionBar actionBar, String title){
         Spannable text = new SpannableString(title);
-        int titleColorRes = FcmClient.getUiConfiguration().getTitleColor();
-        text.setSpan(new ForegroundColorSpan(getResources().getColor(titleColorRes)), 0, text.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        int titleColor = FcmClient.getUiConfiguration().getTitleColor();
+        text.setSpan(new ForegroundColorSpan(titleColor), 0, text.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         actionBar.setTitle(text);
     }
 
