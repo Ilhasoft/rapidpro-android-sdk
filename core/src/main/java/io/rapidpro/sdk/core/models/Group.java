@@ -14,7 +14,7 @@ public class Group implements Parcelable {
 
     private String name;
 
-    private Integer size;
+    private Integer count;
 
     public Integer getGroup() {
         return group;
@@ -40,22 +40,13 @@ public class Group implements Parcelable {
         this.name = name;
     }
 
-    public Integer getSize() {
-        return size;
+    public Integer getCount() {
+        return count;
     }
 
-    public void setSize(Integer size) {
-        this.size = size;
-    }
-
-    @Override
-    public String toString() {
-        return "Group{" +
-                "group=" + group +
-                ", uuid='" + uuid + '\'' +
-                ", name='" + name + '\'' +
-                ", size=" + size +
-                '}';
+    public Group setCount(Integer count) {
+        this.count = count;
+        return this;
     }
 
     @Override
@@ -68,7 +59,7 @@ public class Group implements Parcelable {
         dest.writeValue(this.group);
         dest.writeString(this.uuid);
         dest.writeString(this.name);
-        dest.writeValue(this.size);
+        dest.writeValue(this.count);
     }
 
     public Group() {
@@ -78,7 +69,7 @@ public class Group implements Parcelable {
         this.group = (Integer) in.readValue(Integer.class.getClassLoader());
         this.uuid = in.readString();
         this.name = in.readString();
-        this.size = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.count = (Integer) in.readValue(Integer.class.getClassLoader());
     }
 
     public static final Creator<Group> CREATOR = new Creator<Group>() {

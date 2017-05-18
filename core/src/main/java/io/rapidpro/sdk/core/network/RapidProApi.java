@@ -41,14 +41,14 @@ public interface RapidProApi {
                                            @Field("fcm_token") String fcmToken,
                                            @Field("msg") String msg);
 
-    @GET("api/v1/groups.json")
-    Call<Group> listGroups(@Header("Authorization") String token);
+    @GET("api/v2/groups.json")
+    Call<ApiResponse<Group>> listGroups(@Header("Authorization") String token);
 
-    @GET("api/v1/fields.json")
+    @GET("api/v2/fields.json")
     Call<ApiResponse<io.rapidpro.sdk.core.models.Field>> listFields(@Header("Authorization") String token);
 
     @GET("api/v1/boundaries.json")
-    Call<Boundary> listBoundaries(@Header("Authorization") String token
+    Call<ApiResponse<Boundary>> listBoundaries(@Header("Authorization") String token
             , @Query("page") Integer page, @Query("aliases") Boolean aliases);
 
     @GET("api/v2/messages.json")
@@ -73,6 +73,10 @@ public interface RapidProApi {
 
     @GET("api/v2/contacts.json")
     Call<ApiResponse<Contact>> loadContactV2(@Header("Authorization") String token, @Query("urn") String urn);
+
+    @POST("api/v2/contacts.json")
+    Call<Contact> saveContact(@Header("Authorization") String token,
+                              @Query("uuid") String contactUuid, @Body io.rapidpro.sdk.core.models.v1.Contact contact);
 
     @POST("api/v2/contacts.json")
     Call<Contact> saveContact(@Header("Authorization") String token,

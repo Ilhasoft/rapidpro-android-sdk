@@ -10,9 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 import io.rapidpro.sdk.core.adapters.GsonDateTypeAdapter;
 import io.rapidpro.sdk.core.adapters.HashMapTypeAdapter;
+import io.rapidpro.sdk.core.models.Boundary;
 import io.rapidpro.sdk.core.models.Field;
 import io.rapidpro.sdk.core.models.FlowDefinition;
 import io.rapidpro.sdk.core.models.FlowRun;
+import io.rapidpro.sdk.core.models.Group;
 import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.network.ApiResponse;
 import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
@@ -78,6 +80,14 @@ public class RapidProServices {
         rapidProApi = retrofit.create(RapidProApi.class);
     }
 
+    public Call<ApiResponse<Boundary>> loadBoundaries(Integer page, Boolean aliases) {
+        return rapidProApi.listBoundaries(token, page, aliases);
+    }
+
+    public Call<ApiResponse<Group>> loadGroups() {
+        return rapidProApi.listGroups(token);
+    }
+
     public Call<ApiResponse<Field>> loadFields() {
         return rapidProApi.listFields(token);
     }
@@ -108,6 +118,10 @@ public class RapidProServices {
 
     public Call<ResponseBody> sendReceivedMessage(String channel, String from, String fcmToken, String msg) {
         return rapidProApi.sendReceivedMessage(channel, from, fcmToken, msg);
+    }
+
+    public Call<Contact> saveContact(io.rapidpro.sdk.core.models.v1.Contact contact) {
+        return rapidProApi.saveContact(token, contact.getUuid(), contact);
     }
 
     public Call<Contact> saveContact(Contact contact) {
