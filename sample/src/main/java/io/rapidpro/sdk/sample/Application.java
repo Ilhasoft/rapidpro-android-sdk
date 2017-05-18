@@ -21,6 +21,7 @@ public class Application extends android.app.Application {
                 .setChannel("7815c7fb-eed7-41fe-b585-2a244d398fcb")
                 .setRegistrationServiceClass(PushRegistrationService.class)
                 .setUiConfiguration(new UiConfiguration()
+                        .setTheme(R.style.AppTheme_Blue)
                         .setIconResource(R.mipmap.ic_launcher)
                         .setTitleString("RapidPRO Sample SDK")));
     }
