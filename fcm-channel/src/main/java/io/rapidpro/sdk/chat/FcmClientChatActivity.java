@@ -53,7 +53,7 @@ public class FcmClientChatActivity extends AppCompatActivity {
         if (getSupportActionBar() == null) {
             toolbar.setVisibility(View.VISIBLE);
 
-            int titleColor = getTitleColorFromUiConf();
+            int titleColor = getTitleColorFromSettings();
             toolbar.setTitle(FcmClient.getUiConfiguration().getTitleString());
             toolbar.setTitleTextColor(titleColor);
             toolbar.setBackgroundColor(getToolbarColor());
@@ -67,7 +67,8 @@ public class FcmClientChatActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(FcmClient.getUiConfiguration().getBackResource());
     }
 
-    private int getTitleColorFromUiConf() {
+    @ColorInt
+    private int getTitleColorFromSettings() {
         int titleColor = FcmClient.getUiConfiguration().getTitleColor();
         titleColor = titleColor != UiConfiguration.INVALID_VALUE ? titleColor :
                 ResourcesCompat.getColor(getResources(), android.R.color.white, getTheme());
@@ -82,7 +83,7 @@ public class FcmClientChatActivity extends AppCompatActivity {
 
     private void setActionBarTitleColor(ActionBar actionBar, String title){
         Spannable text = new SpannableString(title);
-        int titleColor = getTitleColorFromUiConf();
+        int titleColor = getTitleColorFromSettings();
         text.setSpan(new ForegroundColorSpan(titleColor), 0, text.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         actionBar.setTitle(text);
     }
