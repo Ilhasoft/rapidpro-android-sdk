@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+</resources>

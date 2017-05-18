@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="fcm_client_gray">#fafafa</color>
+    <color name="fcm_client_gray_super_light">#DDDDDD</color>
     <color name="fcm_client_gray_light">#E6E6E6</color>
     <color name="fcm_client_gray_light_2">#AA555555</color>
     <color name="fcm_client_gray_dark">#e7e7e7</color>
