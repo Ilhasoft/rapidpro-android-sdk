@@ -144,6 +144,10 @@ public class FcmClient {
         return new IllegalStateException("Response not successful. HTTP Code: " + response.code() + " Response: " + response.raw());
     }
 
+    public static int getUnreadMessages() {
+        return getPreferences().getUnreadMessages();
+    }
+
     public static void refreshContactToken() {
         String urn = getPreferences().getUrn();
         if (!TextUtils.isEmpty(urn)) {
