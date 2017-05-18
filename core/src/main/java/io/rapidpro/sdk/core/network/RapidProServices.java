@@ -94,12 +94,12 @@ public class RapidProServices {
         return rapidProApi.loadFlowDefinition(token, flowUuid);
     }
 
-    public Call<Contact> loadContact(String urn) {
-        return rapidProApi.loadContact(token, urn);
+    public Call<ApiResponse<io.rapidpro.sdk.core.models.v1.Contact>> loadContactV1(String urn) {
+        return rapidProApi.loadContactV1(token, urn);
     }
 
-    public Call<ApiResponse<Contact>> loadContactsByUrn(String urn) {
-        return rapidProApi.loadContacts(token, urn);
+    public Call<ApiResponse<Contact>> loadContactV2(String urn) {
+        return rapidProApi.loadContactV2(token, urn);
     }
 
     public Call<FcmRegistrationResponse> registerFcmContact(String channel, String urn, String fcmToken) {

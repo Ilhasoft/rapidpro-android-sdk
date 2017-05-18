@@ -69,10 +69,10 @@ public interface RapidProApi {
     Map<String, Object> saveFlowStepSet(@Header("Authorization") String token, @Body FlowStepSet flowStepSet);
 
     @GET("api/v1/contacts.json")
-    Call<Contact> loadContact(@Header("Authorization") String token, @Query("urns") String urn);
+    Call<ApiResponse<io.rapidpro.sdk.core.models.v1.Contact>> loadContactV1(@Header("Authorization") String token, @Query("urns") String urn);
 
-    @GET("api/v1/contacts.json")
-    Call<ApiResponse<Contact>> loadContacts(@Header("Authorization") String token, @Query("urns") String urn);
+    @GET("api/v2/contacts.json")
+    Call<ApiResponse<Contact>> loadContactV2(@Header("Authorization") String token, @Query("urn") String urn);
 
     @POST("api/v2/contacts.json")
     Call<Contact> saveContact(@Header("Authorization") String token,

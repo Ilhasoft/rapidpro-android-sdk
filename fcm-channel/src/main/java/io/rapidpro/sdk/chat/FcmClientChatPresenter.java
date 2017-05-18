@@ -115,11 +115,11 @@ class FcmClientChatPresenter {
         view.showLoading();
 
         String urn = FcmClient.URN_PREFIX_FCM + FcmClient.getPreferences().getUrn();
-        services.loadContactsByUrn(urn).enqueue(new FcmClientCallback<ApiResponse<Contact>>(this) {
+        services.loadContactV2(urn).enqueue(new FcmClientCallback<ApiResponse<Contact>>(this) {
             @Override
             public void onResponse(Call<ApiResponse<Contact>> call, Response<ApiResponse<Contact>> response) {
                 view.dismissLoading();
-                if (response.isSuccessful() && response.body().getCount() > 0) {
+                if (response.isSuccessful() && response.body() != null && response.body().getResults() != null) {
                     Contact contact = response.body().getResults().get(0);
                     loadMessagesWithContact(contact.getUuid());
                 } else {
