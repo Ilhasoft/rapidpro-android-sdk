@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,9 +53,9 @@ public class FcmClientChatActivity extends AppCompatActivity {
         if (getSupportActionBar() == null) {
             toolbar.setVisibility(View.VISIBLE);
 
-            int titleColorRes = FcmClient.getUiConfiguration().getTitleColor();
+            int titleColor = getTitleColorFromUiConf();
             toolbar.setTitle(FcmClient.getUiConfiguration().getTitleString());
-            toolbar.setTitleTextColor(getResources().getColor(titleColorRes));
+            toolbar.setTitleTextColor(titleColor);
             toolbar.setBackgroundColor(getToolbarColor());
             setSupportActionBar(toolbar);
         } else {
@@ -66,6 +67,13 @@ public class FcmClientChatActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(FcmClient.getUiConfiguration().getBackResource());
     }
 
+    private int getTitleColorFromUiConf() {
+        int titleColor = FcmClient.getUiConfiguration().getTitleColor();
+        titleColor = titleColor != UiConfiguration.INVALID_VALUE ? titleColor :
+                ResourcesCompat.getColor(getResources(), android.R.color.white, getTheme());
+        return titleColor;
+    }
+
     @ColorInt
     private int getToolbarColor() {
         int toolbarColor = FcmClient.getUiConfiguration().getToolbarColor();
@@ -74,7 +82,7 @@ public class FcmClientChatActivity extends AppCompatActivity {
 
     private void setActionBarTitleColor(ActionBar actionBar, String title){
         Spannable text = new SpannableString(title);
-        int titleColor = FcmClient.getUiConfiguration().getTitleColor();
+        int titleColor = getTitleColorFromUiConf();
         text.setSpan(new ForegroundColorSpan(titleColor), 0, text.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         actionBar.setTitle(text);
     }
