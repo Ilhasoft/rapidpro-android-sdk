@@ -120,12 +120,16 @@ public class RapidProServices {
         return rapidProApi.sendReceivedMessage(channel, from, fcmToken, msg);
     }
 
-    public Call<Contact> saveContact(io.rapidpro.sdk.core.models.v1.Contact contact) {
-        return rapidProApi.saveContact(token, contact.getUuid(), contact);
+    public Call<io.rapidpro.sdk.core.models.v1.Contact> saveContactV1(io.rapidpro.sdk.core.models.v1.Contact contact) {
+        return rapidProApi.saveContactV1(token, contact.getUuid(), contact);
     }
 
-    public Call<Contact> saveContact(Contact contact) {
-        return rapidProApi.saveContact(token, contact.getUuid(), contact);
+    public Call<Contact> saveContactV2(io.rapidpro.sdk.core.models.v1.Contact contact) {
+        return rapidProApi.saveContactV2(token, contact.getUuid(), contact);
+    }
+
+    public Call<Contact> saveContactV2(Contact contact) {
+        return rapidProApi.saveContactV2(token, contact.getUuid(), contact);
     }
 
     public Call<ApiResponse<Message>> loadMessages(String contactUuid) {

@@ -74,11 +74,15 @@ public interface RapidProApi {
     @GET("api/v2/contacts.json")
     Call<ApiResponse<Contact>> loadContactV2(@Header("Authorization") String token, @Query("urn") String urn);
 
-    @POST("api/v2/contacts.json")
-    Call<Contact> saveContact(@Header("Authorization") String token,
-                              @Query("uuid") String contactUuid, @Body io.rapidpro.sdk.core.models.v1.Contact contact);
+    @POST("api/v1/contacts.json")
+    Call<io.rapidpro.sdk.core.models.v1.Contact> saveContactV1(@Header("Authorization") String token,
+                                @Query("uuid") String contactUuid, @Body io.rapidpro.sdk.core.models.v1.Contact contact);
 
     @POST("api/v2/contacts.json")
-    Call<Contact> saveContact(@Header("Authorization") String token,
-                              @Query("uuid") String contactUuid, @Body Contact contact);
+    Call<Contact> saveContactV2(@Header("Authorization") String token,
+                                @Query("uuid") String contactUuid, @Body io.rapidpro.sdk.core.models.v1.Contact contact);
+
+    @POST("api/v2/contacts.json")
+    Call<Contact> saveContactV2(@Header("Authorization") String token,
+                                @Query("uuid") String contactUuid, @Body Contact contact);
 }

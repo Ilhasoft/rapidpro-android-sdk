@@ -49,6 +49,6 @@ public class ContactBuilder {
 
     public Call<Contact> saveContact(String host, String token) {
         RapidProServices rapidProServices = new RapidProServices(host, token);
-        return rapidProServices.saveContact(contact);
+        return rapidProServices.saveContactV2(contact);
     }
 }
