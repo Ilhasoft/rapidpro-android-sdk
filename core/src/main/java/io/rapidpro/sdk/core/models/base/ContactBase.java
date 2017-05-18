@@ -1,9 +1,8 @@
-package io.rapidpro.sdk.core.models;
+package io.rapidpro.sdk.core.models.base;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * Created by johncordeiro on 18/08/15.
  */
-public class Contact implements Parcelable {
+public abstract class ContactBase implements Parcelable {
 
     private String uuid;
 
@@ -20,8 +19,6 @@ public class Contact implements Parcelable {
     private String language;
 
     private String email;
-
-    private List<Group> groups;
 
     private List<String> urns;
 
@@ -53,14 +50,6 @@ public class Contact implements Parcelable {
 
     public void setLanguage(String language) {
         this.language = language;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
     }
 
     public List<String> getUrns() {
@@ -109,7 +98,6 @@ public class Contact implements Parcelable {
         return "Contact{" +
                 "name='" + name + '\'' +
                 ", language='" + language + '\'' +
-                ", groups=" + groups +
                 ", email=" + email +
                 ", urns=" + urns +
                 ", fields=" + fields +
@@ -129,23 +117,20 @@ public class Contact implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.language);
         dest.writeString(this.email);
-        dest.writeList(this.groups);
         dest.writeStringList(this.urns);
         dest.writeSerializable(this.fields);
         dest.writeLong(this.modified_on != null ? this.modified_on.getTime() : -1);
         dest.writeString(this.phone);
     }
 
-    public Contact() {
+    public ContactBase() {
     }
 
-    protected Contact(Parcel in) {
+    protected ContactBase(Parcel in) {
         this.uuid = in.readString();
         this.name = in.readString();
         this.language = in.readString();
         this.email = in.readString();
-        this.groups = new ArrayList<Group>();
-        in.readList(this.groups, Group.class.getClassLoader());
         this.urns = in.createStringArrayList();
         this.fields = (HashMap<String, Object>) in.readSerializable();
         long tmpModified_on = in.readLong();
@@ -153,15 +138,4 @@ public class Contact implements Parcelable {
         this.phone = in.readString();
     }
 
-    public static final Creator<Contact> CREATOR = new Creator<Contact>() {
-        @Override
-        public Contact createFromParcel(Parcel source) {
-            return new Contact(source);
-        }
-
-        @Override
-        public Contact[] newArray(int size) {
-            return new Contact[size];
-        }
-    };
 }

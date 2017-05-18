@@ -10,13 +10,13 @@ import java.util.concurrent.TimeUnit;
 
 import io.rapidpro.sdk.core.adapters.GsonDateTypeAdapter;
 import io.rapidpro.sdk.core.adapters.HashMapTypeAdapter;
-import io.rapidpro.sdk.core.models.Contact;
 import io.rapidpro.sdk.core.models.Field;
 import io.rapidpro.sdk.core.models.FlowDefinition;
 import io.rapidpro.sdk.core.models.FlowRun;
 import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.network.ApiResponse;
 import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
+import io.rapidpro.sdk.core.models.v2.Contact;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.rapidpro.sdk.core.models.Contact;
 import io.rapidpro.sdk.core.models.Group;
+import io.rapidpro.sdk.core.models.v2.Contact;
 import io.rapidpro.sdk.core.network.RapidProServices;
 import retrofit2.Call;
 

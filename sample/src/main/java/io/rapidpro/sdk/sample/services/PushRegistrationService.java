@@ -3,7 +3,7 @@ package io.rapidpro.sdk.sample.services;
 import android.util.Log;
 
 import io.rapidpro.sdk.FcmClient;
-import io.rapidpro.sdk.core.models.Contact;
+import io.rapidpro.sdk.core.models.v2.Contact;
 import io.rapidpro.sdk.core.network.RapidProServices;
 import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
 

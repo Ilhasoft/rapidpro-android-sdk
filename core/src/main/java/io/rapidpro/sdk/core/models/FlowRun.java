@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.List;
 
+import io.rapidpro.sdk.core.models.v2.Contact;
+
 /**
  * Created by johncordeiro on 13/10/15.
  */

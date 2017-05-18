@@ -3,7 +3,6 @@ package io.rapidpro.sdk.core.network;
 import java.util.Map;
 
 import io.rapidpro.sdk.core.models.Boundary;
-import io.rapidpro.sdk.core.models.Contact;
 import io.rapidpro.sdk.core.models.FlowDefinition;
 import io.rapidpro.sdk.core.models.FlowRun;
 import io.rapidpro.sdk.core.models.FlowStepSet;
@@ -11,6 +10,7 @@ import io.rapidpro.sdk.core.models.Group;
 import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.network.ApiResponse;
 import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
+import io.rapidpro.sdk.core.models.v2.Contact;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
