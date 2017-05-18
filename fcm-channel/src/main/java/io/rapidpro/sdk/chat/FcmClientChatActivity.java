@@ -27,6 +27,11 @@ public class FcmClientChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int theme = FcmClient.getUiConfiguration().getTheme();
+        if (theme != UiConfiguration.INVALID_VALUE) {
+            setTheme(theme);
+        }
+
         setContentView(R.layout.fcm_client_activity_chat);
         addFcmClientChatFragment(savedInstanceState);
 

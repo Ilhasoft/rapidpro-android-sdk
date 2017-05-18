@@ -3,6 +3,7 @@ package io.rapidpro.sdk;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.StyleRes;
 
 /**
  * Created by john-mac on 7/1/16.
@@ -25,6 +26,9 @@ public class UiConfiguration {
 
     @ColorInt
     private int titleColor = INVALID_VALUE;
+
+    @StyleRes
+    private int theme = INVALID_VALUE;
 
     private String titleString = "";
 
@@ -61,6 +65,15 @@ public class UiConfiguration {
 
     public UiConfiguration setTitleColor(@ColorInt int titleColor) {
         this.titleColor = titleColor;
+        return this;
+    }
+
+    public int getTheme() {
+        return theme;
+    }
+
+    public UiConfiguration setTheme(@StyleRes int theme) {
+        this.theme = theme;
         return this;
     }
 
