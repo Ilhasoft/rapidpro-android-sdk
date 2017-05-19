@@ -2,20 +2,16 @@ package io.rapidpro.sdk;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.view.Window;
 
 import java.util.Collections;
 
@@ -56,6 +52,10 @@ public class FcmClient {
     public static final String URN_PREFIX_FCM = "fcm:";
 
     FcmClient() {}
+
+    public static void initialize(Context context) {
+        FcmClient.context = context;
+    }
 
     public static void initialize(Builder builder) {
         initialize(builder.context, builder.host, builder.token,
