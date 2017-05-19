@@ -17,6 +17,7 @@ import io.mattcarroll.hover.HoverMenuAdapter;
 import io.mattcarroll.hover.NavigatorContent;
 import io.rapidpro.sdk.FcmClient;
 import io.rapidpro.sdk.R;
+import io.rapidpro.sdk.util.BitmapHelper;
 
 /**
  * Created by John Cordeiro on 5/11/17.
@@ -69,23 +70,14 @@ class FcmClientMenuAdapter implements HoverMenuAdapter {
         badge = (TextView) tabView.findViewById(R.id.badge);
         setBadgeCount(badgeCount);
 
-        RoundedBitmapDrawable roundedBitmap = getRoundedBitmap(tabBitmapRes, getRadius());
+        RoundedBitmapDrawable roundedBitmap = BitmapHelper.getRoundedBitmap(mContext, tabBitmapRes, getRadius());
         ImageView icon = (ImageView) tabView.findViewById(R.id.icon);
         icon.setImageDrawable(roundedBitmap);
         return tabView;
     }
 
     private int getRadius() {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20,
-                    mContext.getResources().getDisplayMetrics());
-    }
-
-    @NonNull
-    private RoundedBitmapDrawable getRoundedBitmap(@DrawableRes int tabBitmapRes, int radius) {
-        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), tabBitmapRes);
-        RoundedBitmapDrawable roundedBitmap = RoundedBitmapDrawableFactory.create(mContext.getResources(), bitmap);
-        roundedBitmap.setCornerRadius(radius);
-        return roundedBitmap;
+        return (int) mContext.getResources().getDimension(R.dimen.fcm_client_chat_icon_radius);
     }
 
     void setBadgeCount(int badgeCount) {

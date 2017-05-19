@@ -1,16 +1,21 @@
 package io.rapidpro.sdk;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.Window;
 
 import java.util.Collections;
 
@@ -21,6 +26,7 @@ import io.rapidpro.sdk.core.models.network.FcmRegistrationResponse;
 import io.rapidpro.sdk.core.models.v2.Contact;
 import io.rapidpro.sdk.core.network.RapidProServices;
 import io.rapidpro.sdk.listeners.SendMessageListener;
+import io.rapidpro.sdk.permission.PermissionDialog;
 import io.rapidpro.sdk.persistence.Preferences;
 import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
 import okhttp3.ResponseBody;
@@ -204,14 +210,19 @@ public class FcmClient {
         }
     }
 
-    public static void requestFloatingPermissionsIfNeeded() {
+    public static void requestFloatingPermissionsIfNeeded(Activity activity) {
         if (!hasFloatingPermission()) {
-            requestFloatingPermissions();
+            requestFloatingPermissions(activity);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    public static void requestFloatingPermissions() {
+    public static void requestFloatingPermissions(Activity activity) {
+        PermissionDialog permissionDialog = new PermissionDialog(activity);
+        permissionDialog.show();
+    }
+
+    public static void showManageOverlaySettings() {
         Intent drawOverlaysSettingsIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
         drawOverlaysSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         drawOverlaysSettingsIntent.setData(Uri.parse("package:" + context.getPackageName()));

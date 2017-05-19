@@ -1,12 +1,6 @@
 package io.rapidpro.sdk.sample;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -27,22 +21,8 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.content, FcmClient.createFcmClientChatFragment())
                     .commit();
         }
-        requestPermissionIfNeeded();
+        FcmClient.requestFloatingPermissionsIfNeeded(this);
         setupView();
-    }
-
-    private void requestPermissionIfNeeded() {
-        if (!FcmClient.hasFloatingPermission()) {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.permission_floating_chat)
-                    .setNegativeButton(R.string.no, null)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            FcmClient.requestFloatingPermissions();
-                        }
-                    }).show();
-        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -69,16 +49,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onClickActionFloat() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                Intent drawOverlaysSettingsIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                drawOverlaysSettingsIntent.setData(Uri.parse("package:" + getPackageName()));
-                startActivity(drawOverlaysSettingsIntent);
-            } else {
-                FcmClientMenuService.showFloatingMenu(getApplicationContext());
-            }
+        if (FcmClient.hasFloatingPermission()) {
+            FcmClientMenuService.showFloatingMenu(this);
         } else {
-            FcmClientMenuService.showFloatingMenu(getApplicationContext());
+            FcmClient.requestFloatingPermissionsIfNeeded(this);
         }
     }
 }

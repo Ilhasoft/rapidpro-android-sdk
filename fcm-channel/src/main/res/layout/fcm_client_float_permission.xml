@@ -1,83 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="50dp"
+        android:paddingTop="40dp"
         android:orientation="vertical"
-        tools:background="@drawable/fcm_client_shape_dialog_background">
+        android:background="@drawable/fcm_client_shape_dialog_background">
 
         <TextView
+            android:id="@+id/fcm_client_permission_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/fcm_client_gray_dark_3"
             android:text="@string/fcm_client_permission_message"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:gravity="end"
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/fcm_client_permission_reject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:textSize="16sp"
-                android:text="@string/reject"
-                android:textColor="@color/fcm_client_gray_super_light"
+                android:textColor="@color/fcm_client_gray_dark_3"
+                android:text="@string/fcm_client_reject_permission"
+                android:textAllCaps="false"
                 style="@style/Widget.AppCompat.Button.Borderless"/>
 
             <TextView
+                android:id="@+id/fcm_client_permission_accept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:textColor="@color/fcm_client_blue"
                 android:textSize="16sp"
-                android:text="@string/accept"
-                android:textColor="?attr/colorPrimary"
+                android:text="@string/fcm_client_accept_permission"
+                android:textAllCaps="false"
                 style="@style/Widget.AppCompat.Button.Borderless"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <FrameLayout
+    <include
+        android:id="@+id/fcm_client_tab_view"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/fcm_client_shape_round_border"
-        android:elevation="10dp"
-        tools:ignore="UnusedAttribute">
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="6dp"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/fcm_client_ic_send_message"/>
-
-        <TextView
-            android:id="@+id/badge"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="end"
-            android:gravity="center"
-            android:background="@drawable/fcm_client_red_badge"
-            android:textColor="@android:color/white"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="2"/>
-
-    </FrameLayout>
+        layout="@layout/fcm_client_tab_view"/>
 
 </RelativeLayout>

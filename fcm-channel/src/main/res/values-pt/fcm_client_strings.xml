@@ -7,4 +7,7 @@
     <string name="fcm_client_error_message_send">Não foi possível enviar a mensagem</string>
     <string name="fcm_client_error_load_message">Não foi possível carregar a mensagem, tente novamente mais tarde</string>
     <string name="fcm_client_permission_message">Se você não quiser perder nenhuma notificação e ficar sempre por dentro de todas as nossas enquetes de qualquer lugar, aceite a permissão abaixo!</string>
+
+    <string name="fcm_client_accept_permission">Aceitar</string>
+    <string name="fcm_client_reject_permission">Agora não</string>
 </resources>

@@ -1,7 +1,6 @@
 package io.rapidpro.sdk;
 
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StyleRes;
 
@@ -29,6 +28,8 @@ public class UiConfiguration {
 
     @StyleRes
     private int theme = INVALID_VALUE;
+
+    private String permissionMessage = "";
 
     private String titleString = "";
 
@@ -92,6 +93,15 @@ public class UiConfiguration {
 
     public UiConfiguration setIconFloatingChat(int iconFloatingChat) {
         this.iconFloatingChat = iconFloatingChat;
+        return this;
+    }
+
+    public String getPermissionMessage() {
+        return permissionMessage;
+    }
+
+    public UiConfiguration setPermissionMessage(String permissionMessage) {
+        this.permissionMessage = permissionMessage;
         return this;
     }
 }
