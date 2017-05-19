@@ -58,8 +58,6 @@ class FcmClientChatPresenter {
                     if (hasLoadedSuccessfullyFlowRun(response)) {
                         FlowRun flowRun = response.body().getResults().get(0);
                         getLastRulesetFromFlowRun(flowRun);
-                    } else {
-                        view.showMessage(R.string.fcm_client_error_load_messages);
                     }
                 }
 
