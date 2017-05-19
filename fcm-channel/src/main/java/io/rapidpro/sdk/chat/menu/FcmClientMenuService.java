@@ -32,8 +32,7 @@ public class FcmClientMenuService extends HoverMenuService {
     private int unreadMessages = 0;
 
     public static void showFloatingMenu(Context context) {
-        Preferences preferences = new Preferences(context);
-        showFloatingMenu(context, preferences.getUnreadMessages());
+        showFloatingMenu(context, FcmClient.getPreferences().getUnreadMessages());
     }
 
     public static void showFloatingMenu(Context context, int unreadMessages) {
@@ -55,6 +54,7 @@ public class FcmClientMenuService extends HoverMenuService {
     public void onCreate() {
         super.onCreate();
         visible = true;
+        unreadMessages = FcmClient.getUnreadMessages();
 
         IntentFilter intentFilter = new IntentFilter(FcmClientIntentService.ACTION_MESSAGE_RECEIVED);
         LocalBroadcastManager.getInstance(this).registerReceiver(onMessageReceiver, intentFilter);
