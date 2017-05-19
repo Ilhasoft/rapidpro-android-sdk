@@ -52,7 +52,7 @@ class FcmClientChatPresenter {
     void loadCurrentRulesets() {
         Message message = view.getLastMessage();
         if (message != null) {
-            services.loadRuns(FcmClient.getContact().getUuid()).enqueue(new FcmClientCallback<ApiResponse<FlowRun>>(this) {
+            services.loadRuns(FcmClient.getContact().getUuid()).enqueue(new Callback<ApiResponse<FlowRun>>() {
                 @Override
                 public void onResponse(Call<ApiResponse<FlowRun>> call, Response<ApiResponse<FlowRun>> response) {
                     if (hasLoadedSuccessfullyFlowRun(response)) {
@@ -64,6 +64,9 @@ class FcmClientChatPresenter {
                 private boolean hasLoadedSuccessfullyFlowRun(Response<ApiResponse<FlowRun>> response) {
                     return response.isSuccessful() && response.body().getResults() != null && response.body().getResults().size() > 0;
                 }
+
+                @Override
+                public void onFailure(Call<ApiResponse<FlowRun>> call, Throwable t) { /* Do nothing */}
             });
         }
     }
@@ -82,7 +85,7 @@ class FcmClientChatPresenter {
     }
 
     private void loadFlow(FlowRun flowRun, final FlowStep flowStep) {
-        services.loadFlowDefinition(flowRun.getFlow().getUuid()).enqueue(new FcmClientCallback<FlowDefinition>(this) {
+        services.loadFlowDefinition(flowRun.getFlow().getUuid()).enqueue(new Callback<FlowDefinition>() {
             @Override
             public void onResponse(Call<FlowDefinition> call, Response<FlowDefinition> response) {
                 if (hasLoadedSuccessfullyFlows(response)) {
@@ -97,6 +100,10 @@ class FcmClientChatPresenter {
                 return response.isSuccessful() && response.body() != null
                     && response.body().getFlows() != null && response.body().getFlows().size() > 0;
             }
+
+            @Override
+            public void onFailure(Call<FlowDefinition> call, Throwable t) { /* Do nothing */ }
+
         });
     }
 
