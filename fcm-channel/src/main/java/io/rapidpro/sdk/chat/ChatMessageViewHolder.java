@@ -75,8 +75,17 @@ public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
                 , ViewGroup.LayoutParams.WRAP_CONTENT);
         addRule(userAuthor, params);
-        params.leftMargin = userAuthor ? largeSpace : smallSpace;
-        params.rightMargin = userAuthor ? smallSpace : largeSpace;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            params.setMarginStart(userAuthor ? largeSpace : smallSpace);
+        } else {
+            params.leftMargin = userAuthor ? largeSpace : smallSpace;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            params.setMarginEnd(userAuthor ? smallSpace : largeSpace);
+        } else {
+            params.rightMargin = userAuthor ? smallSpace : largeSpace;
+        }
         parent.setLayoutParams(params);
 
         int drawable = userAuthor ? R.drawable.fcm_client_bubble_me : R.drawable.fcm_client_bubble_other;

@@ -1,0 +1,13 @@
+<resources>
+    <string name="fcm_client_app_name">IlhaPush</string>
+    <string name="fcm_client_error_contact_update">لم يكن من الممكن لحفظ جهة الاتصال، تحقق من اتصال الإنترنت الخاص بك</string>
+    <string name="fcm_client_hint_message">اكتب رسالة</string>
+    <string name="fcm_client_error_load_messages">لم يكن من الممكن لتحميل الرسائل، حاول مرة أخرى في وقت لاحق</string>
+    <string name="fcm_client_error_send_message">اكتب رسالة</string>
+    <string name="fcm_client_error_message_send">لم يكن من الممكن إرسال رسالة</string>
+    <string name="fcm_client_error_load_message">تعذر تحميل الرسالة، أعد المحاولة لاحقا</string>
+    <string name="fcm_client_permission_message">إذا كنت لا تريد أن تفقد أي إعلام ودائما يكون على بينة من جميع استطلاعات الرأي في أي مكان، يرجى قبول الإذن أدناه.</string>
+
+    <string name="fcm_client_accept_permission">قبول</string>
+    <string name="fcm_client_reject_permission">ليس</string>
+</resources>
