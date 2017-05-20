@@ -2,11 +2,11 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/fcm_client_gray"
-    android:animateLayoutChanges="true">
+    android:background="@color/fcm_client_gray">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:layout_above="@+id/tags"
+        android:layout_above="@+id/containerSeparator"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:clipToPadding="false"/>
@@ -63,18 +63,6 @@
         android:layout_alignTop="@+id/message"
         android:layout_alignParentBottom="true"
         android:background="@color/fcm_client_gray_dark"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/tags"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/containerSeparator"
-        android:layout_gravity="center"
-        android:padding="5dp"
-        android:clipToPadding="false"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:layout_height="50dp"/>
 
     <ImageView
         android:id="@+id/sendMessage"

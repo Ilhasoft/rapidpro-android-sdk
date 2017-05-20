@@ -1,5 +1,6 @@
 package io.rapidpro.sdk.chat;
 
+import android.animation.LayoutTransition;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -26,7 +28,6 @@ import java.util.List;
 import io.rapidpro.sdk.FcmClient;
 import io.rapidpro.sdk.R;
 import io.rapidpro.sdk.chat.tags.OnTagClickListener;
-import io.rapidpro.sdk.chat.tags.TagsAdapter;
 import io.rapidpro.sdk.core.managers.FlowRunnerManager;
 import io.rapidpro.sdk.core.models.FlowRuleset;
 import io.rapidpro.sdk.core.models.Message;
@@ -43,7 +44,6 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
 
     private EditText message;
     private RecyclerView messageList;
-    private RecyclerView tags;
     private ProgressBar progressBar;
 
     private ChatMessagesAdapter adapter;
@@ -98,25 +98,21 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
 
     @SuppressWarnings("ConstantConditions")
     private void setupView(View view) {
+        RelativeLayout container = (RelativeLayout) view.findViewById(R.id.container);
+        LayoutTransition transition = new LayoutTransition();
+        transition.setDuration(500);
+        container.setLayoutTransition(transition);
+
         message = (EditText) view.findViewById(R.id.message);
-        adapter = new ChatMessagesAdapter();
-
-        tags = (RecyclerView) view.findViewById(R.id.tags);
-        int spacing = tags.getPaddingBottom();
-
-        SpaceItemDecoration messagesItemDecoration = new SpaceItemDecoration();
-        messagesItemDecoration.setVerticalSpaceHeight(spacing);
+        adapter = new ChatMessagesAdapter(onTagClickListener);
 
         messageList = (RecyclerView) view.findViewById(R.id.messageList);
         messageList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
+
+        SpaceItemDecoration messagesItemDecoration = new SpaceItemDecoration();
+        messagesItemDecoration.setVerticalSpaceHeight(messageList.getPaddingBottom()/2);
         messageList.addItemDecoration(messagesItemDecoration);
         messageList.setAdapter(adapter);
-
-        SpaceItemDecoration tagsItemDecoration = new SpaceItemDecoration();
-        tagsItemDecoration.setHorizontalSpaceWidth(spacing);
-
-        tags.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        tags.addItemDecoration(tagsItemDecoration);
 
         ImageView sendMessage = (ImageView) view.findViewById(R.id.sendMessage);
         sendMessage.setOnClickListener(onSendMessageClickListener);
@@ -206,15 +202,13 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
         if (rulesets != null && rulesets.getRules() != null) {
             Type type = presenter.getFirstType(rulesets);
             if (type == Type.Choice) {
-                TagsAdapter tagsAdapter = new TagsAdapter(rulesets.getRules(), onTagClickListener);
-                tags.setAdapter(tagsAdapter);
-                tags.setVisibility(View.VISIBLE);
+                adapter.setRulesets(rulesets);
             } else {
                 message.setInputType(FlowRunnerManager.getInputTypeByType(type));
-                tags.setVisibility(View.GONE);
+                adapter.removeRulesets();
             }
         } else {
-            tags.setVisibility(View.GONE);
+            adapter.removeRulesets();
         }
     }
 
@@ -257,7 +251,7 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
         message.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         message.setError(null);
         message.setText(null);
-        tags.setVisibility(View.GONE);
+        adapter.removeRulesets();
     }
 
     private BroadcastReceiver onRegisteredReceiver = new BroadcastReceiver() {

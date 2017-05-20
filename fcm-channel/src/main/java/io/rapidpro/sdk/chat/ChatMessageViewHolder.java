@@ -24,7 +24,7 @@ import io.rapidpro.sdk.util.PicassoImageGetter;
 /**
  * Created by john-mac on 4/11/16.
  */
-public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
+class ChatMessageViewHolder extends RecyclerView.ViewHolder {
 
     private Message chatMessage;
 
