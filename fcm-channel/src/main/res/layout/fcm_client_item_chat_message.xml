@@ -36,12 +36,13 @@
 
         <TextView
             android:id="@+id/chatMessage"
-            android:layout_gravity="start"
-            android:gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textAlignment="viewStart"
+            android:gravity="start"
             android:textColor="@android:color/black"
-            tools:text="Mensagem do chat, testando, testando Mensagem do chat, testando, testando Mensagem do chat, testando, testando Mensagem do chat, testando, testando " />
+            tools:text="Mensagem do chat, testando, testando Mensagem do chat, testando, testando Mensagem do chat, testando, testando Mensagem do chat, testando, testando" />
 
         <TextView
             android:id="@+id/chatMessageDate"
