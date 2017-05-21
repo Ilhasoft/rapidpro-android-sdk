@@ -1,0 +1,12 @@
+<resources>
+    <string name="fcm_client_hint_message">Escribe un mensaje</string>
+    <string name="fcm_client_error_contact_update">No fue posible guardar el contacto, revisar su conexión a Internet</string>
+    <string name="fcm_client_error_load_messages">No fue posible cargar los mensajes, vuelva a intentarlo más tarde</string>
+    <string name="fcm_client_error_send_message">Escribe un mensaje</string>
+    <string name="fcm_client_error_message_send">No fue posible enviar un mensaje</string>
+    <string name="fcm_client_error_load_message">No fue posible cargar el mensaje, vuelva a intentarlo más tarde</string>
+    <string name="fcm_client_permission_message">Si no quieres perder ninguna notificación y siempre estar enterado de todas las mensajes en cualquier lugar, acepta el permiso a continuación.</string>
+
+    <string name="fcm_client_accept_permission">Aceptar</string>
+    <string name="fcm_client_reject_permission">Aún no</string>
+</resources>

@@ -1,12 +1,11 @@
 <resources>
-    <string name="fcm_client_app_name">IlhaPush</string>
     <string name="fcm_client_hint_message">Type a message</string>
     <string name="fcm_client_error_contact_update">It was not possible to save the contact, check your internet connection</string>
     <string name="fcm_client_error_load_messages">It was not possible to load the messages, try again later</string>
     <string name="fcm_client_error_send_message">Type a message</string>
     <string name="fcm_client_error_message_send">It was not possible to send a message</string>
     <string name="fcm_client_error_load_message">It was not possible to load the message, try again later</string>
-    <string name="fcm_client_permission_message">If you don\'t want to lose any notification and always be aware of all polls anywhere, please accept the permission below.</string>
+    <string name="fcm_client_permission_message">If you don\'t want to lose any notification and always be aware of all messages anywhere, please accept the permission below.</string>
 
     <string name="fcm_client_accept_permission">Accept</string>
     <string name="fcm_client_reject_permission">Not yet</string>
