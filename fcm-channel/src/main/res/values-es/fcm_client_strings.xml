@@ -1,6 +1,5 @@
 <resources>
     <string name="fcm_client_hint_message">Escribe un mensaje</string>
-    <string name="fcm_client_error_contact_update">No fue posible guardar el contacto, revisar su conexión a Internet</string>
     <string name="fcm_client_error_load_messages">No fue posible cargar los mensajes, vuelva a intentarlo más tarde</string>
     <string name="fcm_client_error_send_message">Escribe un mensaje</string>
     <string name="fcm_client_error_message_send">No fue posible enviar un mensaje</string>

@@ -1,6 +1,5 @@
 <resources>
     <string name="fcm_client_hint_message">Введіть повідомлення</string>
-    <string name="fcm_client_error_contact_update">Неможливо зберегти контакт, перевірте підключення до Інтернету</string>
     <string name="fcm_client_error_load_messages">Не вдалося завантажити повідомлення, спробуйте ще раз пізніше</string>
     <string name="fcm_client_error_send_message">Введіть повідомлення</string>
     <string name="fcm_client_error_message_send">Чи не вдалося відправити повідомлення</string>
