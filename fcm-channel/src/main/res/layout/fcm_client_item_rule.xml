@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:textColor="@android:color/white"
+    android:textSize="16sp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:maxLines="1"
+    android:clickable="true"
+    android:background="@drawable/fcm_client_shape_round"
+    tools:text="Olhar Digital" />

@@ -1,0 +1,11 @@
+<resources>
+    <string name="fcm_client_hint_message">พิมพ์ข้อความ</string>
+    <string name="fcm_client_error_load_messages">ไม่สามารถโหลดข้อความได้โปรดลองอีกครั้งในภายหลัง</string>
+    <string name="fcm_client_error_send_message">พิมพ์ข้อความ</string>
+    <string name="fcm_client_error_message_send">ไม่สามารถส่งข้อความได้</string>
+    <string name="fcm_client_error_load_message">ไม่สามารถโหลดข้อความได้โปรดลองอีกครั้งในภายหลัง</string>
+    <string name="fcm_client_permission_message">หากคุณไม่ต้องการรับการแจ้งเตือนใด ๆ และควรตระหนักถึงข้อความทั้งหมดอยู่เสมอโปรดยอมรับการอนุญาตด้านล่างนี้</string>
+
+    <string name="fcm_client_accept_permission">ยอมรับ</string>
+    <string name="fcm_client_reject_permission">ยัง</string>
+</resources>

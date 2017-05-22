@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tags"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/containerSeparator"
+    android:layout_gravity="center"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:clipToPadding="false"
+    tools:listitem="@layout/fcm_client_item_rule"
+    tools:visibility="visible"
+    tools:layout_height="50dp" />

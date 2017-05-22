@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/fcm_client_gray">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/messageList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@+id/containerSeparator"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:clipToPadding="false"/>
+
+    <View
+        android:id="@+id/containerSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/fcm_client_gray_dark"
+        android:layout_above="@+id/message"/>
+
+    <EditText
+        android:id="@id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/messageSeparator"
+        android:layout_toStartOf="@+id/messageSeparator"
+        android:layout_alignParentBottom="true"
+        android:minHeight="52dp"
+        android:textColor="@color/fcm_client_black"
+        android:textColorHint="@color/fcm_client_gray_dark_3"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:gravity="start|center_vertical"
+        android:textAlignment="viewStart"
+        android:inputType="textMultiLine"
+        android:imeOptions="actionSend|flagNoEnterAction"
+        android:maxLines="3"
+        android:background="@android:color/white"
+        android:hint="@string/fcm_client_hint_message" />
+
+    <View
+        android:id="@+id/messageSeparator"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/sendMessage"
+        android:layout_toStartOf="@+id/sendMessage"
+        android:layout_alignTop="@+id/message"
+        android:layout_alignParentBottom="true"
+        android:background="@color/fcm_client_gray_dark"/>
+
+    <ImageView
+        android:id="@+id/sendMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/message"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/messageSeparator"
+        android:padding="15dp"
+        android:scaleType="center"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:src="@drawable/fcm_client_ic_send_message" />
+
+</RelativeLayout>
