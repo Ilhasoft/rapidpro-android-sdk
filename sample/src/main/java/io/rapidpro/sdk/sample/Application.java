@@ -19,9 +19,9 @@ public class Application extends android.app.Application {
         super.onCreate();
 
         FcmClient.initialize(new FcmClient.Builder(this)
-                .setHost("https://rapidpro.ilhasoft.mobi/")
-                .setToken("f417616c57339f28e07bcedf8d4f23f74614bcb5")
-                .setChannel("7815c7fb-eed7-41fe-b585-2a244d398fcb")
+                .setHost(Constants.HOST)
+                .setToken(Constants.TOKEN)
+                .setChannel(Constants.CHANNEL)
                 .setRegistrationServiceClass(PushRegistrationService.class)
                 .setUiConfiguration(new UiConfiguration()
                         .setPermissionMessage("Please give me permission to open floating chat!")

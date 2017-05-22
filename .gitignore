@@ -1,5 +1,8 @@
 # Created by https://www.gitignore.io/api/java,intellij,android,osx,windows,linux,git
 
+# Custom files ignored
+sample/src/main/java/io/rapidpro/sdk/sample/Constants.java
+
 ### Intellij ###
 
 .idea/
