@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.CallSuper;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
@@ -39,7 +40,8 @@ public class FcmClientIntentService extends FirebaseMessagingService {
     private static final String KEY_TITLE = "title";
 
     @Override
-    public final void onMessageReceived(RemoteMessage remoteMessage) {
+    @CallSuper
+    public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         Map<String, String> data = remoteMessage.getData();
