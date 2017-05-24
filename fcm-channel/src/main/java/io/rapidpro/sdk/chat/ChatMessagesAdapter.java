@@ -102,7 +102,11 @@ class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     Message getLastMessage() {
-        return chatMessages.isEmpty() ? null : getItem(0);
+        return chatMessages.isEmpty() ? null : getItem(getFirstPosition());
+    }
+
+    private int getFirstPosition() {
+        return hasRulesets() ? 1 : 0;
     }
 
     void setMessages(List<Message> messages) {
@@ -116,7 +120,7 @@ class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             chatMessages.set(location, message);
             notifyItemChanged(location);
         } else {
-            int position = hasRulesets() ? 1 : 0;
+            int position = getFirstPosition();
             chatMessages.add(position, message);
             notifyItemInserted(position);
         }
