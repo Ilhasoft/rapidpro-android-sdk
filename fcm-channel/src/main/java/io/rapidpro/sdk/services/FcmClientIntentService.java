@@ -47,7 +47,7 @@ public class FcmClientIntentService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
         String type = data.get(KEY_TYPE);
 
-        if (isRapidproType(type)) {
+        if (isRapidproType(type) && FcmClient.isContactRegistered()) {
             Intent pushReceiveIntent = new Intent(ACTION_MESSAGE_RECEIVED);
             pushReceiveIntent.putExtra(KEY_DATA, BundleHelper.convertToBundleFrom(data));
 

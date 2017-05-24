@@ -161,6 +161,11 @@ public class FcmClient {
         }
     }
 
+    public static void clearContact() {
+        Preferences preferences = getPreferences();
+        preferences.clear();
+    }
+
     public static void registerContactIfNeeded(String urn) {
         if (!isContactRegistered()) {
             registerContact(urn);
