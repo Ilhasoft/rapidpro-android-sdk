@@ -53,10 +53,6 @@ public class FcmClient {
 
     FcmClient() {}
 
-    public static void initialize(Context context) {
-        FcmClient.context = context;
-    }
-
     public static void initialize(Builder builder) {
         initialize(builder.context, builder.host, builder.token,
                 builder.channel, builder.registrationServiceClass, builder.uiConfiguration);
@@ -64,13 +60,19 @@ public class FcmClient {
 
     private static void initialize(Context context, String host, String token, String channel
             , Class<? extends FcmClientRegistrationIntentService> registrationServiceClass, UiConfiguration uiConfiguration) {
+        if (context == null) {
+            throw new IllegalArgumentException("It's not possible to initilize FcmClient without a context");
+        }
+
         FcmClient.context = context;
         FcmClient.host = host;
         FcmClient.token = token;
         FcmClient.channel = channel;
         FcmClient.registrationServiceClass = registrationServiceClass;
         FcmClient.preferences = new Preferences(context);
-        FcmClient.services = new RapidProServices(host, getToken());
+        if (!TextUtils.isEmpty(host) && !TextUtils.isEmpty(getToken())) {
+            FcmClient.services = new RapidProServices(host, getToken());
+        }
         FcmClient.uiConfiguration = uiConfiguration;
     }
 
