@@ -3,29 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="40dp"
     android:layout_height="40dp"
-    android:orientation="vertical"
-    android:background="@drawable/fcm_client_shape_round_border"
-    android:elevation="10dp"
-    tools:targetApi="lollipop">
+    tools:layout_width="100dp"
+    tools:layout_height="100dp">
 
-    <ImageView
-        android:id="@+id/icon"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="6dp"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/fcm_client_ic_send_message"/>
+        android:layout_margin="7dp"
+        android:orientation="vertical"
+        android:background="@drawable/fcm_client_shape_round_border"
+        android:elevation="7dp"
+        tools:targetApi="lollipop">
 
-    <TextView
-        android:id="@+id/badge"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="end"
-        android:gravity="center"
-        android:background="@drawable/fcm_client_red_badge"
-        android:textColor="@android:color/white"
-        android:visibility="gone"
-        tools:visibility="visible"
-        tools:text="2"/>
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/fcm_client_ic_send_message"/>
+
+        <TextView
+            android:id="@+id/badge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:background="@drawable/fcm_client_red_badge"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="2"/>
+
+    </FrameLayout>
 
 </FrameLayout>

@@ -159,11 +159,6 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
         public void onReceive(Context context, Intent intent) {
             Bundle data = intent.getBundleExtra(FcmClientIntentService.KEY_DATA);
             presenter.loadMessage(data);
-
-            Message message = BundleHelper.getMessage(data);
-            message.setCreatedOn(new Date());
-            adapter.addChatMessage(message);
-            onLastMessageChanged();
         }
     };
 
@@ -214,7 +209,16 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
 
     private void onLastMessageChanged() {
         messageList.scrollToPosition(0);
-        presenter.loadCurrentRulesets();
+        loadCurrentRulesetsDelayed();
+    }
+
+    private void loadCurrentRulesetsDelayed() {
+        messageList.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                presenter.loadCurrentRulesets();
+            }
+        }, 500);
     }
 
     @Override

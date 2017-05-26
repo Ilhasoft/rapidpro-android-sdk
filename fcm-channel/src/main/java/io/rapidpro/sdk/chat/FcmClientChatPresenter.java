@@ -164,7 +164,9 @@ class FcmClientChatPresenter {
     }
 
     void loadMessage(Bundle data) {
-        view.onMessageLoaded(BundleHelper.getMessage(data));
+        Message message = BundleHelper.getMessage(data);
+        message.setCreatedOn(new Date());
+        view.onMessageLoaded(message);
     }
 
     Message createChatMessage(String messageText) {
