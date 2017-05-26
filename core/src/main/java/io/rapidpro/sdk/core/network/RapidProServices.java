@@ -112,8 +112,9 @@ public class RapidProServices {
         return rapidProApi.loadContactV2(token, urn);
     }
 
-    public Call<FcmRegistrationResponse> registerFcmContact(String channel, String urn, String fcmToken) {
-        return rapidProApi.registerFcmContact(channel, urn, fcmToken);
+    public Call<FcmRegistrationResponse> registerFcmContact(String channel, String urn, String fcmToken,
+                                                            String contactUuid) {
+        return rapidProApi.registerFcmContact(channel, urn, fcmToken, contactUuid);
     }
 
     public Call<ResponseBody> sendReceivedMessage(String channel, String from, String fcmToken, String msg) {

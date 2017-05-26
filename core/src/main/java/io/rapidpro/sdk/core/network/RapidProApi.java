@@ -32,7 +32,8 @@ public interface RapidProApi {
     @POST("handlers/fcm/register/{channel}/")
     Call<FcmRegistrationResponse> registerFcmContact(@Path("channel") String channel,
                                                      @Field("urn") String urn,
-                                                     @Field("fcm_token") String fcmToken);
+                                                     @Field("fcm_token") String fcmToken,
+                                                     @Field("contact_uuid") String contactUuid);
 
     @FormUrlEncoded
     @POST("handlers/fcm/receive/{channel}")

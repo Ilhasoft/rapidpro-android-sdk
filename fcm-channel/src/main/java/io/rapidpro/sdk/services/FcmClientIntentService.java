@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.CallSuper;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
@@ -39,13 +40,14 @@ public class FcmClientIntentService extends FirebaseMessagingService {
     private static final String KEY_TITLE = "title";
 
     @Override
-    public final void onMessageReceived(RemoteMessage remoteMessage) {
+    @CallSuper
+    public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         Map<String, String> data = remoteMessage.getData();
         String type = data.get(KEY_TYPE);
 
-        if (isRapidproType(type)) {
+        if (isRapidproType(type) && FcmClient.isContactRegistered()) {
             Intent pushReceiveIntent = new Intent(ACTION_MESSAGE_RECEIVED);
             pushReceiveIntent.putExtra(KEY_DATA, BundleHelper.convertToBundleFrom(data));
 

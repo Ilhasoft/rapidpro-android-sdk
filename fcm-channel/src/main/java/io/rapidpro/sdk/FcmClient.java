@@ -53,10 +53,6 @@ public class FcmClient {
 
     FcmClient() {}
 
-    public static void initialize(Context context) {
-        FcmClient.context = context;
-    }
-
     public static void initialize(Builder builder) {
         initialize(builder.context, builder.host, builder.token,
                 builder.channel, builder.registrationServiceClass, builder.uiConfiguration);
@@ -64,13 +60,19 @@ public class FcmClient {
 
     private static void initialize(Context context, String host, String token, String channel
             , Class<? extends FcmClientRegistrationIntentService> registrationServiceClass, UiConfiguration uiConfiguration) {
+        if (context == null) {
+            throw new IllegalArgumentException("It's not possible to initilize FcmClient without a context");
+        }
+
         FcmClient.context = context;
         FcmClient.host = host;
         FcmClient.token = token;
         FcmClient.channel = channel;
         FcmClient.registrationServiceClass = registrationServiceClass;
         FcmClient.preferences = new Preferences(context);
-        FcmClient.services = new RapidProServices(host, getToken());
+        if (!TextUtils.isEmpty(host) && !TextUtils.isEmpty(getToken())) {
+            FcmClient.services = new RapidProServices(host, getToken());
+        }
         FcmClient.uiConfiguration = uiConfiguration;
     }
 
@@ -140,9 +142,10 @@ public class FcmClient {
         return contact;
     }
 
-    public static Response<FcmRegistrationResponse> saveContactWithToken(String urn, String fcmToken, String token) throws java.io.IOException {
+    public static Response<FcmRegistrationResponse> saveContactWithToken(String urn, String fcmToken,
+                                                                         String contactUuid, String token) throws java.io.IOException {
         RapidProServices rapidProServices = new RapidProServices(host, token);
-        return rapidProServices.registerFcmContact(channel, urn, fcmToken).execute();
+        return rapidProServices.registerFcmContact(channel, urn, fcmToken, contactUuid).execute();
     }
 
     @NonNull
@@ -161,6 +164,11 @@ public class FcmClient {
         }
     }
 
+    public static void clearContact() {
+        Preferences preferences = getPreferences();
+        preferences.clear();
+    }
+
     public static void registerContactIfNeeded(String urn) {
         if (!isContactRegistered()) {
             registerContact(urn);
@@ -168,11 +176,18 @@ public class FcmClient {
     }
 
     public static void registerContact(String urn) {
+        registerContact(urn, null);
+    }
+
+    public static void registerContact(String urn, String contactUuid) {
         Class<? extends FcmClientRegistrationIntentService> registrationIntentService =
                 registrationServiceClass != null ? registrationServiceClass : FcmClientRegistrationIntentService.class;
 
         Intent registrationIntent = new Intent(context, registrationIntentService);
         registrationIntent.putExtra(FcmClientRegistrationIntentService.EXTRA_URN, urn);
+        if (!TextUtils.isEmpty(contactUuid)) {
+            registrationIntent.putExtra(FcmClientRegistrationIntentService.EXTRA_CONTACT_UUID, contactUuid);
+        }
         context.startService(registrationIntent);
     }
 

@@ -38,10 +38,10 @@ class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
-            case VIEW_TYPE_TEXT_MESSAGES:
-                return new ChatMessageViewHolder(parent.getContext(), parent, iconResource);
             case VIEW_TYPE_TAGS:
                 return new RulesViewHolder(parent.getContext(), parent, onTagClickListener);
+            case VIEW_TYPE_TEXT_MESSAGES:
+                return new ChatMessageViewHolder(parent.getContext(), parent, iconResource);
             default:
                 throw new IllegalStateException("View type not recognized by ChatMessagesAdapter");
         }
@@ -50,19 +50,18 @@ class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case VIEW_TYPE_TEXT_MESSAGES:
-                ChatMessageViewHolder chatMessageViewHolder = ((ChatMessageViewHolder)holder);
-                chatMessageViewHolder.setOnChatMessageSelectedListener(onChatMessageSelectedListener);
-                chatMessageViewHolder.bindView(getItem(position));
-                break;
             case VIEW_TYPE_TAGS:
                 RulesViewHolder rulesViewHolder = ((RulesViewHolder)holder);
                 rulesViewHolder.bind(rulesets);
+                break;
+            case VIEW_TYPE_TEXT_MESSAGES:
+                ChatMessageViewHolder chatMessageViewHolder = ((ChatMessageViewHolder)holder);
+                chatMessageViewHolder.setOnChatMessageSelectedListener(onChatMessageSelectedListener);
+                chatMessageViewHolder.bindView(getItem(getPositionFromMessage(position)));
         }
     }
 
     private Message getItem(int position) {
-        position = hasRulesets() ? position - 1 : position;
         return chatMessages.get(position);
     }
 
@@ -74,11 +73,11 @@ class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public long getItemId(int position) {
         switch (getItemViewType(position)) {
-            case VIEW_TYPE_TEXT_MESSAGES:
-                Message chatMessage = getItem(position);
-                return chatMessage.getId() != null ? chatMessage.getId().hashCode() : 0;
             case VIEW_TYPE_TAGS:
                 return rulesets.getUuid().hashCode();
+            case VIEW_TYPE_TEXT_MESSAGES:
+                Message chatMessage = getItem(getPositionFromMessage(position));
+                return chatMessage.getId() != null ? chatMessage.getId().hashCode() : 0;
             default:
                 return super.getItemId(position);
         }
@@ -102,11 +101,11 @@ class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     Message getLastMessage() {
-        return chatMessages.isEmpty() ? null : getItem(getFirstPosition());
+        return chatMessages.isEmpty() ? null : chatMessages.get(0);
     }
 
-    private int getFirstPosition() {
-        return hasRulesets() ? 1 : 0;
+    private int getPositionFromMessage(int position) {
+        return hasRulesets() ? position - 1 : position;
     }
 
     void setMessages(List<Message> messages) {
@@ -120,9 +119,8 @@ class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             chatMessages.set(location, message);
             notifyItemChanged(location);
         } else {
-            int position = getFirstPosition();
-            chatMessages.add(position, message);
-            notifyItemInserted(position);
+            chatMessages.add(0, message);
+            notifyItemInserted(hasRulesets() ? 1 : 0);
         }
     }
 

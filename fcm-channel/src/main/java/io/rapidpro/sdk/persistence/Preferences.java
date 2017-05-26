@@ -67,6 +67,14 @@ public class Preferences {
         return sharedPreferences.getString(getKey(KEY_FCM_TOKEN), null);
     }
 
+    public void clear() {
+        setContactUuid("");
+        setUrn("");
+        setFcmToken("");
+        setUnreadMessages(0);
+        commit();
+    }
+
     @SuppressLint("ApplySharedPref")
     public void commit() {
         SharedPreferences.Editor editor = this.sharedPreferences.edit();
