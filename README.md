@@ -31,3 +31,7 @@ Latest Version: [![Latest version](https://jitpack.io/v/ilhasoft/rapidpro-androi
 * Notifications of new messages by using Firebase Cloud Messaging;
 * Works well with Right-to-left languages;
 * Floating chat when users aren't with your app open;
+
+## Sample
+
+<img src="sample.gif" alt="...">
