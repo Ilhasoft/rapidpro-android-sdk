@@ -27,6 +27,7 @@ public class FcmClientRegistrationIntentService extends IntentService {
     private static final String TAG = "RegistrationIntent";
 
     public static final String EXTRA_URN = "urn";
+    public static final String EXTRA_CONTACT_UUID = "contactUuid";
 
     public FcmClientRegistrationIntentService() {
         super(TAG);
@@ -36,13 +37,15 @@ public class FcmClientRegistrationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         try {
             String urn = intent.getStringExtra(EXTRA_URN);
+            String contactUuid = intent.getStringExtra(EXTRA_CONTACT_UUID);
+
             String fcmToken = FirebaseInstanceId.getInstance().getToken();
 
             Preferences preferences = FcmClient.getPreferences();
             Contact contact = null;
 
             if (!TextUtils.isEmpty(FcmClient.getToken())) {
-                Response<FcmRegistrationResponse> response = saveContactWithToken(urn, fcmToken);
+                Response<FcmRegistrationResponse> response = saveContactWithToken(urn, fcmToken, contactUuid);
                 FcmRegistrationResponse fcmRegistrationResponse = response.body();
 
                 preferences.setContactUuid(fcmRegistrationResponse.getContactUuid());
@@ -66,9 +69,10 @@ public class FcmClientRegistrationIntentService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
-    private Response<FcmRegistrationResponse> saveContactWithToken(String urn, String fcmToken) throws java.io.IOException {
+    private Response<FcmRegistrationResponse> saveContactWithToken(String urn, String fcmToken,
+                                                                   String contactUuid) throws java.io.IOException {
         RapidProServices rapidProServices = new RapidProServices(FcmClient.getHost(), FcmClient.getToken());
-        return rapidProServices.registerFcmContact(FcmClient.getChannel(), urn, fcmToken).execute();
+        return rapidProServices.registerFcmContact(FcmClient.getChannel(), urn, fcmToken, contactUuid).execute();
     }
 
     public void onFcmRegistered(String pushIdentity, Contact contact){}
