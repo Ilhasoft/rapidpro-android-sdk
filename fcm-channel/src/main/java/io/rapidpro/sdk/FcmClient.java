@@ -191,7 +191,8 @@ public class FcmClient {
     }
 
     public static boolean isContactRegistered() {
-        return !TextUtils.isEmpty(getPreferences().getFcmToken()) && !TextUtils.isEmpty(getPreferences().getContactUuid());
+        return !TextUtils.isEmpty(getPreferences().getFcmToken())
+            && !TextUtils.isEmpty(getPreferences().getContactUuid());
     }
 
     public static RapidProServices getServices() {
