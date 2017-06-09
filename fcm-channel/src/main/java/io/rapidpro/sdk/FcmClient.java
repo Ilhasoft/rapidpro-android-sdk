@@ -158,9 +158,8 @@ public class FcmClient {
     }
 
     public static void refreshContactToken() {
-        String urn = getPreferences().getUrn();
-        if (!TextUtils.isEmpty(urn)) {
-            registerContact(urn);
+        if (isContactRegistered()) {
+            registerContact(getPreferences().getUrn(), getPreferences().getContactUuid());
         }
     }
 
