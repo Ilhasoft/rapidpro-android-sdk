@@ -59,18 +59,18 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         return rules.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView text;
         private FlowRule rule;
 
-        public ViewHolder(ViewGroup parent) {
+        ViewHolder(ViewGroup parent) {
             super(LayoutInflater.from(parent.getContext()).inflate(R.layout.fcm_client_item_rule, null));
             text = (TextView) itemView.findViewById(R.id.text);
             text.setOnClickListener(onTagClickListener);
         }
 
-        public void bind(FlowRule rule) {
+        void bind(FlowRule rule) {
             this.rule = rule;
             text.setText(getFirstFromMap(rule.getCategory()));
         }
@@ -88,17 +88,16 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
             if(response == null && rule.getTest().getTest() != null
             && rule.getTest().getTest().values().size() > 0) {
                 response = getFirstFromMap(rule.getTest().getTest());
+                if (!TextUtils.isEmpty(response)) {
+                    return response.split(" ")[0];
+                }
             }
             return response;
         }
     }
 
     private String getFirstFromMap(HashMap<String, String> map) {
-        String ruleValues = map.values().iterator().next();
-        if (!TextUtils.isEmpty(ruleValues)) {
-            return ruleValues.split(" ")[0];
-        }
-        return ruleValues;
+        return map.values().iterator().next();
     }
 
 }
