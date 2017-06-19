@@ -158,9 +158,8 @@ public class FcmClient {
     }
 
     public static void refreshContactToken() {
-        String urn = getPreferences().getUrn();
-        if (!TextUtils.isEmpty(urn)) {
-            registerContact(urn);
+        if (isContactRegistered()) {
+            registerContact(getPreferences().getUrn(), getPreferences().getContactUuid());
         }
     }
 
@@ -192,7 +191,8 @@ public class FcmClient {
     }
 
     public static boolean isContactRegistered() {
-        return !TextUtils.isEmpty(getPreferences().getFcmToken()) && !TextUtils.isEmpty(getPreferences().getContactUuid());
+        return !TextUtils.isEmpty(getPreferences().getFcmToken())
+            && !TextUtils.isEmpty(getPreferences().getContactUuid());
     }
 
     public static RapidProServices getServices() {

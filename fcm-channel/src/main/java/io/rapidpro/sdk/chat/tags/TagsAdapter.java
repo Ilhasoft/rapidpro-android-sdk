@@ -3,6 +3,7 @@ package io.rapidpro.sdk.chat.tags;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         private String getResponseFromRule() {
             String response = rule.getTest().getBase();
             if(response == null && rule.getTest().getTest() != null
-                    && rule.getTest().getTest().values().size() > 0) {
+            && rule.getTest().getTest().values().size() > 0) {
                 response = getFirstFromMap(rule.getTest().getTest());
             }
             return response;
@@ -93,7 +94,11 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
     }
 
     private String getFirstFromMap(HashMap<String, String> map) {
-        return map.values().iterator().next();
+        String ruleValues = map.values().iterator().next();
+        if (!TextUtils.isEmpty(ruleValues)) {
+            return ruleValues.split(" ")[0];
+        }
+        return ruleValues;
     }
 
 }

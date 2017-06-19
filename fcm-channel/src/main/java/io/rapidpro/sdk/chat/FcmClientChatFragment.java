@@ -22,7 +22,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.util.Date;
 import java.util.List;
 
 import io.rapidpro.sdk.FcmClient;
@@ -34,7 +33,6 @@ import io.rapidpro.sdk.core.models.Message;
 import io.rapidpro.sdk.core.models.Type;
 import io.rapidpro.sdk.services.FcmClientIntentService;
 import io.rapidpro.sdk.services.FcmClientRegistrationIntentService;
-import io.rapidpro.sdk.util.BundleHelper;
 import io.rapidpro.sdk.util.SpaceItemDecoration;
 
 /**
@@ -47,7 +45,6 @@ public class FcmClientChatFragment extends Fragment implements FcmClientChatView
     private ProgressBar progressBar;
 
     private ChatMessagesAdapter adapter;
-
     private FcmClientChatPresenter presenter;
 
     public static boolean visible = false;
