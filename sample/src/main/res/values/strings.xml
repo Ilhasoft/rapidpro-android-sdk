@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RapidPRO SDK Sample</string>
+    <string name="app_name">FCM Channel Sample</string>
     <string name="save">Save</string>
 
     <string name="title_floating">Float</string>
