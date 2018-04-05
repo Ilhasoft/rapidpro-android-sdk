@@ -74,7 +74,7 @@ public class RapidProServices {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(host)
                 .client(client)
-                .addConverterFactory (GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         rapidProApi = retrofit.create(RapidProApi.class);

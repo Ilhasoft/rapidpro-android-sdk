@@ -27,7 +27,7 @@ public class Flow implements Parcelable {
     @SerializedName("rule_sets")
     private List<FlowRuleset> ruleSets;
 
-    private Integer version;
+    private String version;
 
     @SerializedName("flow_type")
     private String type;
@@ -76,11 +76,11 @@ public class Flow implements Parcelable {
         this.ruleSets = ruleSets;
     }
 
-    public Integer getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
@@ -147,7 +147,7 @@ public class Flow implements Parcelable {
         dest.writeString(this.baseLanguage);
         dest.writeTypedList(this.actionSets);
         dest.writeTypedList(this.ruleSets);
-        dest.writeValue(this.version);
+        dest.writeString(this.version);
         dest.writeString(this.type);
         dest.writeString(this.entry);
         dest.writeParcelable(this.metadata, flags);
@@ -162,7 +162,7 @@ public class Flow implements Parcelable {
         this.baseLanguage = in.readString();
         this.actionSets = in.createTypedArrayList(FlowActionSet.CREATOR);
         this.ruleSets = in.createTypedArrayList(FlowRuleset.CREATOR);
-        this.version = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.version = in.readString();
         this.type = in.readString();
         this.entry = in.readString();
         this.metadata = in.readParcelable(FlowMetadata.class.getClassLoader());
