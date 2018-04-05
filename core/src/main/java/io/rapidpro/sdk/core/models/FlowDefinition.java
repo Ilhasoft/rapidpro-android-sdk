@@ -12,7 +12,7 @@ import io.rapidpro.sdk.core.models.v2.Contact;
  */
 public class FlowDefinition implements Parcelable {
 
-    private Integer version;
+    private String version;
 
     private String site;
 
@@ -22,11 +22,11 @@ public class FlowDefinition implements Parcelable {
 
     private transient FlowRun flowRun;
 
-    public Integer getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
@@ -78,7 +78,7 @@ public class FlowDefinition implements Parcelable {
     }
 
     protected FlowDefinition(Parcel in) {
-        this.version = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.version = in.readString();
         this.site = in.readString();
         this.flows = in.createTypedArrayList(Flow.CREATOR);
     }
