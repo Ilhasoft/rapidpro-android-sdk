@@ -69,7 +69,7 @@ public class FlowDefinition implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.version);
+        dest.writeString(this.version);
         dest.writeString(this.site);
         dest.writeTypedList(this.flows);
     }
