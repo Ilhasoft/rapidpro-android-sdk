@@ -7,16 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import io.mattcarroll.hover.Navigator;
-import io.mattcarroll.hover.NavigatorContent;
 import io.fcmchannel.sdk.FcmClient;
 import io.fcmchannel.sdk.R;
 import io.fcmchannel.sdk.chat.FcmClientChatFragment;
+import io.mattcarroll.hover.Content;
 
 /**
  * A Hover menu screen that does not take up the entire screen.
  */
-class FcmClientNavigatorContent implements NavigatorContent {
+class FcmClientContent implements Content {
 
     private final Context mContext;
     private final FcmClientChatFragment fragment;
@@ -25,9 +24,14 @@ class FcmClientNavigatorContent implements NavigatorContent {
 
     private boolean created = false;
 
-    FcmClientNavigatorContent(@NonNull Context context) {
+    FcmClientContent(@NonNull Context context) {
         mContext = context.getApplicationContext();
         fragment = new FcmClientChatFragment();
+    }
+
+    @Override
+    public boolean isFullscreen() {
+        return false;
     }
 
     @NonNull
@@ -39,10 +43,10 @@ class FcmClientNavigatorContent implements NavigatorContent {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             rootView = (ViewGroup) inflater.inflate(R.layout.fcm_client_chat_box, null);
 
-            TextView title = (TextView) rootView.findViewById(R.id.title);
+            TextView title = rootView.findViewById(R.id.title);
             title.setText(FcmClient.getUiConfiguration().getTitleString());
 
-            ViewGroup content = (ViewGroup) rootView.findViewById(R.id.content);
+            ViewGroup content = rootView.findViewById(R.id.content);
             chatFragmentView = inflater.inflate(R.layout.fcm_client_fragment_chat, null);
             chatFragmentView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
             content.addView(chatFragmentView);
@@ -51,7 +55,7 @@ class FcmClientNavigatorContent implements NavigatorContent {
     }
 
     @Override
-    public void onShown(@NonNull Navigator navigator) {
+    public void onShown() {
         if (!created) {
             fragment.onViewCreated(chatFragmentView, null);
             created = true;
@@ -63,4 +67,5 @@ class FcmClientNavigatorContent implements NavigatorContent {
     public void onHidden() {
         fragment.unregisterBroadcasts(mContext);
     }
+
 }

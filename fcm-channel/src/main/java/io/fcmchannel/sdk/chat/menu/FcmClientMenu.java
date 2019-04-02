@@ -1,76 +1,93 @@
 package io.fcmchannel.sdk.chat.menu;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import io.mattcarroll.hover.HoverMenuAdapter;
-import io.mattcarroll.hover.NavigatorContent;
+import java.util.Collections;
+import java.util.List;
+
 import io.fcmchannel.sdk.FcmClient;
 import io.fcmchannel.sdk.R;
 import io.fcmchannel.sdk.util.BitmapHelper;
+import io.mattcarroll.hover.HoverMenu;
 
 /**
  * Created by John Cordeiro on 5/11/17.
  */
 
-class FcmClientMenuAdapter implements HoverMenuAdapter {
+class FcmClientMenu extends HoverMenu {
+
+    private static final String ID_MENU = "fcm_client_menu";
+    private static final String ID_CHAT_SECTION = "chat_section";
 
     private final Context mContext;
-    private final FcmClientNavigatorContent fcmClientNavigatorContent;
+    private final Section mChatSection;
+    private final FcmClientContent fcmClientContent;
     private final int badgeCount;
 
     private TextView badge;
 
-    FcmClientMenuAdapter(@NonNull Context context, int badgeCount) {
+    FcmClientMenu(@NonNull Context context, int badgeCount) {
         mContext = context.getApplicationContext();
-        fcmClientNavigatorContent = new FcmClientNavigatorContent(context);
+        fcmClientContent = new FcmClientContent(context);
         this.badgeCount = badgeCount;
+
+        int iconResource = FcmClient.getUiConfiguration().getIconFloatingChat();
+        mChatSection = new Section(
+                new SectionId(ID_CHAT_SECTION),
+                createTabView(iconResource),
+                fcmClientContent
+        );
     }
 
     @Override
-    public int getTabCount() {
+    public String getId() {
+        return ID_MENU;
+    }
+
+    @Override
+    public int getSectionCount() {
         return 1;
     }
 
+    @Nullable
     @Override
-    public long getTabId(int position) {
-        return position;
+    public Section getSection(int index) {
+        if (0 == index) {
+            return mChatSection;
+        }
+        return null;
     }
 
+    @Nullable
     @Override
-    public View getTabView(int position) {
-        int iconResource = FcmClient.getUiConfiguration().getIconFloatingChat();
-        return createTabView(iconResource);
+    public Section getSection(@NonNull SectionId sectionId) {
+        if (sectionId.equals(mChatSection.getId())) {
+            return mChatSection;
+        }
+        return null;
     }
 
+    @NonNull
     @Override
-    public NavigatorContent getNavigatorContent(int position) {
-        return fcmClientNavigatorContent;
+    public List<Section> getSections() {
+        return Collections.singletonList(mChatSection);
     }
-
-    @Override
-    public void addContentChangeListener(@NonNull ContentChangeListener listener) {}
-
-    @Override
-    public void removeContentChangeListener(@NonNull ContentChangeListener listener) {}
 
     private View createTabView(@DrawableRes int tabBitmapRes) {
         View tabView = LayoutInflater.from(mContext).inflate(R.layout.fcm_client_tab_view, null);
-        badge = (TextView) tabView.findViewById(R.id.badge);
+        badge = tabView.findViewById(R.id.badge);
         setBadgeCount(badgeCount);
 
         RoundedBitmapDrawable roundedBitmap = BitmapHelper.getRoundedBitmap(mContext, tabBitmapRes, getRadius());
-        ImageView icon = (ImageView) tabView.findViewById(R.id.icon);
+        ImageView icon = tabView.findViewById(R.id.icon);
         icon.setImageDrawable(roundedBitmap);
         return tabView;
     }
