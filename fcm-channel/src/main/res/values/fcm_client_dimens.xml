@@ -4,4 +4,7 @@
     <dimen name="fcm_client_chat_height">300dp</dimen>
     <dimen name="fcm_client_chat_icon_radius">25dp</dimen>
 
+    <dimen name="hover_tab_size">104dp</dimen>
+    <dimen name="hover_tab_margin">16dp</dimen>
+
 </resources>

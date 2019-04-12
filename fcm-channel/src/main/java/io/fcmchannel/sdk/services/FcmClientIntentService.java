@@ -1,9 +1,11 @@
 package io.fcmchannel.sdk.services;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.provider.Settings;
@@ -19,6 +21,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 import io.fcmchannel.sdk.FcmClient;
+import io.fcmchannel.sdk.R;
 import io.fcmchannel.sdk.chat.FcmClientChatActivity;
 import io.fcmchannel.sdk.chat.menu.FcmClientMenuService;
 import io.fcmchannel.sdk.persistence.Preferences;
@@ -33,6 +36,7 @@ public class FcmClientIntentService extends FirebaseMessagingService {
     private static final String CUSTOM_TYPE = "rapidpro";
 
     private static final int NOTIFICATION_ID = 30;
+    private static final String NOTIFICATION_CHANNEL_ID = "fcm_client_chat";
 
     public static final String KEY_DATA = "data";
     private static final String KEY_TYPE = "type";
@@ -100,6 +104,20 @@ public class FcmClientIntentService extends FirebaseMessagingService {
     protected void onCreateLocalNotification(NotificationCompat.Builder builder) {
         NotificationManager mNotificationManager =
                 (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    getString(R.string.notification_channel),
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.BLUE);
+            notificationChannel.enableVibration(true);
+
+            builder.setChannelId(NOTIFICATION_CHANNEL_ID);
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
         mNotificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 

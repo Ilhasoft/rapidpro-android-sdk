@@ -12,5 +12,5 @@
     <color name="fcm_client_black">#212121</color>
 
     <color name="fcm_client_orange">#FFFF9600</color>
-    <color name="floatingmenu_popup_color">#ffffff</color>
+    <color name="hover_navigator_color">#ffffff</color>
 </resources>

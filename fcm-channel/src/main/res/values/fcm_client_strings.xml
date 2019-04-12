@@ -8,4 +8,6 @@
 
     <string name="fcm_client_accept_permission">Accept</string>
     <string name="fcm_client_reject_permission">Not yet</string>
+
+    <string name="notification_channel">Chat</string>
 </resources>
