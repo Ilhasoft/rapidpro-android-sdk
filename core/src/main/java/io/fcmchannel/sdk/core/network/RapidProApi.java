@@ -29,14 +29,14 @@ import retrofit2.http.Query;
 public interface RapidProApi {
 
     @FormUrlEncoded
-    @POST("handlers/fcm/register/{channel}/")
+    @POST("c/fcm/{channel}/register")
     Call<FcmRegistrationResponse> registerFcmContact(@Path("channel") String channel,
                                                      @Field("urn") String urn,
                                                      @Field("fcm_token") String fcmToken,
                                                      @Field("contact_uuid") String contactUuid);
 
     @FormUrlEncoded
-    @POST("handlers/fcm/receive/{channel}")
+    @POST("c/fcm/{channel}/receive")
     Call<ResponseBody> sendReceivedMessage(@Path("channel") String channel,
                                            @Field("from") String from,
                                            @Field("fcm_token") String fcmToken,
